@@ -1,0 +1,156 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>DPA Privacy Legal Review AI Agent</title>
+    <link rel="stylesheet" href="styles.css">
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0/css/all.min.css" rel="stylesheet">
+</head>
+<body>
+    <header class="header">
+        <div class="container">
+            <h1><i class="fas fa-shield-alt"></i> DPA Privacy Legal Review AI</h1>
+            <p>Automated privacy compliance analysis for Data Processing Agreements</p>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <!-- Upload Section -->
+            <section class="upload-section" id="uploadSection">
+                <div class="upload-card">
+                    <h2><i class="fas fa-upload"></i> Upload Data Processing Agreement</h2>
+                    <p>Upload your DPA document for automated privacy legal review and GDPR compliance analysis</p>
+                    
+                    <div class="upload-area" id="uploadArea">
+                        <div class="upload-content">
+                            <i class="fas fa-cloud-upload-alt upload-icon"></i>
+                            <p>Drag and drop your DPA document here</p>
+                            <p class="upload-subtitle">or click to browse files</p>
+                            <input type="file" id="fileInput" accept=".pdf,.doc,.docx,.txt" hidden>
+                            <button class="btn btn-primary" onclick="document.getElementById('fileInput').click()">
+                                <i class="fas fa-folder-open"></i> Choose File
+                            </button>
+                        </div>
+                    </div>
+                    
+                    <div class="file-info" id="fileInfo" style="display: none;">
+                        <div class="file-details">
+                            <i class="fas fa-file-alt"></i>
+                            <span id="fileName"></span>
+                            <span id="fileSize"></span>
+                        </div>
+                        <button class="btn btn-success" id="analyzeBtn" onclick="analyzeDocument()">
+                            <i class="fas fa-search"></i> Analyze Document
+                        </button>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Loading Section -->
+            <section class="loading-section" id="loadingSection" style="display: none;">
+                <div class="loading-card">
+                    <div class="loading-spinner">
+                        <i class="fas fa-cog fa-spin"></i>
+                    </div>
+                    <h3>Analyzing Your DPA...</h3>
+                    <p>Our AI is reviewing your document against GDPR requirements and privacy best practices.</p>
+                    <div class="progress-steps">
+                        <div class="step active">
+                            <i class="fas fa-file-upload"></i>
+                            <span>Document Processing</span>
+                        </div>
+                        <div class="step active">
+                            <i class="fas fa-search"></i>
+                            <span>Legal Analysis</span>
+                        </div>
+                        <div class="step">
+                            <i class="fas fa-chart-line"></i>
+                            <span>Risk Assessment</span>
+                        </div>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Results Section -->
+            <section class="results-section" id="resultsSection" style="display: none;">
+                <div class="results-header">
+                    <h2><i class="fas fa-clipboard-check"></i> Analysis Results</h2>
+                    <button class="btn btn-outline" onclick="resetAnalysis()">
+                        <i class="fas fa-plus"></i> Analyze Another Document
+                    </button>
+                </div>
+
+                <!-- Overall Assessment -->
+                <div class="assessment-card">
+                    <h3><i class="fas fa-gauge-high"></i> Overall Assessment</h3>
+                    <div class="assessment-grid">
+                        <div class="metric-card">
+                            <div class="metric-value" id="complianceScore">-</div>
+                            <div class="metric-label">Compliance Score</div>
+                        </div>
+                        <div class="metric-card">
+                            <div class="metric-value risk-level" id="riskLevel">-</div>
+                            <div class="metric-label">Risk Level</div>
+                        </div>
+                    </div>
+                    <div class="executive-summary">
+                        <h4>Executive Summary</h4>
+                        <p id="executiveSummary">-</p>
+                    </div>
+                </div>
+
+                <!-- Section Analysis -->
+                <div class="section-analysis">
+                    <h3><i class="fas fa-list-check"></i> Section Analysis</h3>
+                    <div id="sectionResults"></div>
+                </div>
+
+                <!-- Key Findings -->
+                <div class="findings-grid">
+                    <div class="findings-card">
+                        <h4><i class="fas fa-exclamation-triangle"></i> Critical Issues</h4>
+                        <ul id="criticalIssues"></ul>
+                    </div>
+                    <div class="findings-card">
+                        <h4><i class="fas fa-check-circle"></i> Strengths</h4>
+                        <ul id="strengths"></ul>
+                    </div>
+                    <div class="findings-card">
+                        <h4><i class="fas fa-times-circle"></i> Missing Clauses</h4>
+                        <ul id="missingClauses"></ul>
+                    </div>
+                    <div class="findings-card">
+                        <h4><i class="fas fa-lightbulb"></i> Recommendations</h4>
+                        <ul id="recommendations"></ul>
+                    </div>
+                </div>
+            </section>
+
+            <!-- Playbook Section -->
+            <section class="playbook-section">
+                <div class="playbook-card">
+                    <h2><i class="fas fa-book"></i> DPA Review Playbook</h2>
+                    <p>Reference guide for Data Processing Agreement review and GDPR compliance</p>
+                    <button class="btn btn-outline" onclick="togglePlaybook()">
+                        <i class="fas fa-eye"></i> View Playbook
+                    </button>
+                    <div class="playbook-content" id="playbookContent" style="display: none;">
+                        <div id="playbookDetails"></div>
+                    </div>
+                </div>
+            </section>
+        </div>
+    </main>
+
+    <footer class="footer">
+        <div class="container">
+            <p>&copy; 2024 DPA Privacy Legal Review AI Agent. For educational and MVP purposes.</p>
+            <p><i class="fas fa-info-circle"></i> This tool provides automated analysis only. Always consult with qualified legal professionals for final review.</p>
+        </div>
+    </footer>
+
+    <script src="script.js"></script>
+</body>
+</html>
