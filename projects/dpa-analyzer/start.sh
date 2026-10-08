@@ -22,7 +22,7 @@ fi
 # Start backend
 echo ""
 echo "🔧 Starting backend server..."
-cd backend
+cd "$(dirname "$0")"
 
 # Check if virtual environment exists
 if [ ! -d "venv" ]; then
@@ -48,7 +48,6 @@ sleep 3
 # Start frontend
 echo ""
 echo "🌐 Starting frontend server on port 3000..."
-cd ../frontend
 
 # Start simple HTTP server in background
 python3 -m http.server 3000 &

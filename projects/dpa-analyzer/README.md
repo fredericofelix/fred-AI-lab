@@ -33,11 +33,22 @@ Before running the application, ensure you have:
    ollama serve
    ```
 
+### Quick Start
+
+With Ollama running, start both servers from this folder:
+
+```bash
+./start.sh      # macOS/Linux
+start.bat       # Windows
+```
+
+Or follow the manual steps below. All commands run from this folder (`projects/dpa-analyzer/`).
+
 ### Step 2: Set Up Backend
 
-1. Navigate to the backend directory:
+1. Navigate to the project directory:
    ```bash
-   cd backend
+   cd projects/dpa-analyzer
    ```
 
 2. Create a virtual environment:
@@ -60,12 +71,7 @@ Before running the application, ensure you have:
 
 ### Step 3: Set Up Frontend
 
-1. Navigate to the frontend directory:
-   ```bash
-   cd frontend
-   ```
-
-2. Start a simple HTTP server:
+1. In another terminal, from the same folder, start a simple HTTP server:
    ```bash
    # Using Python
    python -m http.server 3000
@@ -74,7 +80,7 @@ Before running the application, ensure you have:
    npx serve . -p 3000
    ```
 
-3. Open your browser and go to `http://localhost:3000`
+2. Open your browser and go to `http://localhost:3000`
 
 ## 🎯 Usage
 
@@ -113,22 +119,21 @@ Click "View Playbook" to access the comprehensive DPA review guide that includes
 ## 🏗️ Architecture
 
 ```
-DPA Legal Review AI/
-├── backend/                 # FastAPI backend
-│   ├── main.py             # Main application server
-│   ├── dpa_analyzer.py     # AI analysis engine
-│   ├── knowledge_base.py   # DPA review playbook
-│   └── requirements.txt    # Python dependencies
-├── frontend/               # Web interface
-│   ├── index.html         # Main page
-│   ├── styles.css         # Modern styling
-│   └── script.js          # Interactive functionality
-└── README.md              # This file
+projects/dpa-analyzer/
+├── main.py              # FastAPI server (backend)
+├── dpa_analyzer.py      # AI analysis engine
+├── knowledge_base.py    # DPA review playbook
+├── requirements.txt     # Python dependencies
+├── index.html           # Web interface (frontend)
+├── styles.css           # Styling
+├── script.js            # Interactive functionality
+├── start.sh / start.bat # Startup scripts
+└── README.md            # This file
 ```
 
 ## 🤖 AI Model Configuration
 
-The system is configured to use Llama 3.1 8B by default, but you can modify the model in `backend/dpa_analyzer.py`:
+The system is configured to use Llama 3.1 8B by default, but you can modify the model in `dpa_analyzer.py`:
 
 ```python
 self.model_name = "llama3.1:8b"  # Change to your preferred model
