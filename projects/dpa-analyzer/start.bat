@@ -23,7 +23,7 @@ if errorlevel 1 (
 REM Start backend
 echo.
 echo 🔧 Starting backend server...
-cd backend
+cd /d "%~dp0"
 
 REM Check if virtual environment exists
 if not exist "venv" (
@@ -48,7 +48,6 @@ timeout /t 3 /nobreak >nul
 REM Start frontend
 echo.
 echo 🌐 Starting frontend server on port 3000...
-cd ..\frontend
 
 REM Start simple HTTP server
 start /b python -m http.server 3000
