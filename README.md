@@ -1,6 +1,6 @@
 # fred-AI-lab
 
-Privacy Engineering projects.
+Legal AI projects.
 
 ## Projects
 
