@@ -31,7 +31,7 @@ CANDIDATES: dict[str, tuple[str, str, str | None]] = {
     "phi-4-mini": ("unsloth/Phi-4-mini-instruct-GGUF", "Phi-4-mini-instruct-Q4_K_M.gguf", None),
     "gemma-3-4b": ("unsloth/gemma-3-4b-it-GGUF", "gemma-3-4b-it-Q4_K_M.gguf", None),
 }
-DEFAULT_MODEL = "qwen3-4b"  # provisional until the spike decides
+DEFAULT_MODEL = "qwen3-4b"  # chosen by the spike, see SPIKE.md
 
 
 class LlamaCppExtractor:
