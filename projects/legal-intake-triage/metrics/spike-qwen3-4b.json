@@ -1,0 +1,186 @@
+{
+  "model": "qwen3-4b",
+  "n": 10,
+  "high_risk_recall": 0.8571428571428571,
+  "high_risk_recall_strict": 0.8571428571428571,
+  "review_rate_design": 0.6,
+  "review_rate_uncertainty": 0.1,
+  "type_accuracy": 0.9,
+  "signal_recall": 0.9,
+  "priority_accuracy": 0.9,
+  "valid_output_rate": 1.0,
+  "mean_seconds": 27.059259745800045,
+  "max_seconds": 194.41389541600074,
+  "rubric_fit": [],
+  "rows": [
+    {
+      "id": "T-001",
+      "gold_type": "data_subject_rights",
+      "type": "data_subject_rights",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-REGULATOR"
+      ],
+      "signals": [
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 194.41
+    },
+    {
+      "id": "T-002",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-LAUNCH",
+        "SIG-VALUE"
+      ],
+      "signals": [
+        "SIG-LAUNCH",
+        "SIG-VALUE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 9.99
+    },
+    {
+      "id": "T-003",
+      "gold_type": "litigation",
+      "type": "litigation",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-HARD-DEADLINE"
+      ],
+      "signals": [
+        "SIG-HARD-DEADLINE"
+      ],
+      "review_reasons": [
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 8.82
+    },
+    {
+      "id": "T-004",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 8.45
+    },
+    {
+      "id": "T-005",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "high",
+      "priority": "normal",
+      "gold_signals": [
+        "SIG-CASH",
+        "SIG-EXPIRY"
+      ],
+      "signals": [
+        "SIG-EXPIRY"
+      ],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 6.69
+    },
+    {
+      "id": "T-006",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [
+        "missing_info"
+      ],
+      "valid_output": true,
+      "seconds": 4.57
+    },
+    {
+      "id": "T-007",
+      "gold_type": "advisory",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 3.93
+    },
+    {
+      "id": "T-008",
+      "gold_type": "compliance",
+      "type": "advisory",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-INCIDENT"
+      ],
+      "signals": [
+        "SIG-INCIDENT"
+      ],
+      "review_reasons": [
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 8.43
+    },
+    {
+      "id": "T-009",
+      "gold_type": "corporate",
+      "type": "corporate",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-EXEC"
+      ],
+      "signals": [
+        "SIG-EXEC"
+      ],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 5.97
+    },
+    {
+      "id": "T-010",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 19.33
+    }
+  ]
+}

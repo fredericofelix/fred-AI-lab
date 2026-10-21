@@ -20,7 +20,7 @@ def extraction_schema(rubric: Rubric) -> dict:
         "properties": {
             "type": {"type": "string", "enum": list(rubric.types)},
             "type_span": {"type": "string"},
-            "secondary_type": {"type": ["string", "null"], "enum": [*rubric.types, None]},
+            "secondary_type": {"anyOf": [{"type": "string", "enum": list(rubric.types)}, {"type": "null"}]},
             "signals": {
                 "type": "array",
                 "items": {
