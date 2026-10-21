@@ -1,0 +1,159 @@
+# Rubrica de triagem do jurídico interno — Lex Seed
+# Licença: CC-BY-4.0. Edite à vontade: é a régua do seu jurídico.
+#
+# Como funciona:
+# - O modelo de IA só identifica o TIPO da demanda e os SINAIS abaixo,
+#   citando o trecho exato do texto.
+# - Urgência e risco = o maior valor entre a base do tipo e os sinais encontrados.
+# - Prioridade = matriz urgência x risco, salvo sinais com "override".
+# - Prazo interno = tabela de prazos (dias úteis; 0 = mesmo dia).
+# Níveis: low (baixa/o), medium (média/o), high (alta/o).
+
+version: "0.1"
+
+types:
+  - id: contract
+    name: Contratos
+    description: Elaborar, revisar ou negociar contratos, aditivos, termos e propostas comerciais.
+    examples:
+      - "revisar o contrato com o novo fornecedor"
+      - "o cliente mandou a minuta com alterações"
+    urgency: low
+    risk: medium
+  - id: advisory
+    name: Consultivo geral
+    description: Dúvidas jurídicas do dia a dia que não se encaixam em outro tipo.
+    examples:
+      - "posso usar essa foto do banco de imagens no site?"
+      - "qual a regra para sorteio em campanha de marketing?"
+    urgency: low
+    risk: low
+  - id: litigation
+    name: Contencioso
+    description: Processos judiciais ou administrativos, citações, intimações, audiências e acordos.
+    examples:
+      - "chegou uma citação de um processo"
+      - "o advogado da outra parte propôs acordo"
+    urgency: medium
+    risk: medium
+  - id: labor
+    name: Trabalhista
+    description: Contratação, desligamento, jornada, benefícios, conduta e saúde e segurança de colaboradores.
+    examples:
+      - "como fica o banco de horas do time de vendas?"
+      - "precisamos desligar um colaborador"
+    urgency: low
+    risk: medium
+  - id: corporate
+    name: Societário
+    description: Atos societários, procurações, atas, alterações de contrato social e estrutura do grupo.
+    examples:
+      - "precisamos de uma procuração para o diretor financeiro"
+      - "vamos abrir uma filial em outro estado"
+    urgency: low
+    risk: medium
+  - id: data_subject_rights
+    name: LGPD / direitos do titular
+    description: >-
+      Pedido de um titular sobre os próprios dados pessoais (acesso, correção, exclusão,
+      oposição, portabilidade), mesmo quando chega disfarçado de reclamação.
+    examples:
+      - "o cliente quer saber quais dados temos dele"
+      - "pediu para apagar o cadastro e parar de receber mensagens"
+    urgency: medium
+    risk: medium
+    legal_deadline_days: 15
+    legal_basis: "LGPD, art. 19, II"
+  - id: compliance
+    name: Compliance / regulatório
+    description: Normas setoriais, licenças, políticas internas, canal de denúncias e relacionamento com órgãos reguladores.
+    examples:
+      - "precisamos renovar a licença de funcionamento"
+      - "recebemos uma denúncia no canal de ética"
+    urgency: medium
+    risk: medium
+  - id: other
+    name: Outros
+    description: Demanda que não é jurídica ou que não dá para classificar com segurança.
+    examples:
+      - "alguém sabe onde fica o cartório mais perto?"
+    urgency: low
+    risk: low
+
+signals:
+  - id: SIG-EXEC
+    name: Pedido da diretoria
+    description: Quem pede é C-level, diretoria ou conselho, ou a demanda vem em nome deles.
+    examples:
+      - "o CEO pediu para ver isso hoje"
+      - "a diretoria precisa da resposta"
+    urgency: high
+  - id: SIG-VALUE
+    name: Valor acima de R$ 50 mil
+    description: Negociação, contrato ou pagamento com valor informado acima de R$ 50.000.
+    examples:
+      - "contrato de R$ 120 mil por ano"
+      - "proposta de 80 mil"
+    risk: high
+  - id: SIG-CASH
+    name: Impacto no caixa
+    description: Afeta o caixa da empresa, como pagamento, cobrança, retenção ou multa relevante.
+    examples:
+      - "o fornecedor vai cobrar multa"
+      - "o cliente suspendeu o pagamento"
+    risk: high
+  - id: SIG-LAUNCH
+    name: Lançamento próximo
+    description: Produto, serviço ou campanha com data de lançamento próxima que depende da resposta.
+    examples:
+      - "o lançamento é na semana que vem"
+      - "a campanha entra no ar na sexta"
+    urgency: high
+  - id: SIG-HARD-DEADLINE
+    name: Prazo externo fatal
+    description: Citação, intimação, notificação extrajudicial ou prazo processual ou administrativo correndo.
+    examples:
+      - "recebemos uma notificação extrajudicial com prazo de 5 dias"
+      - "chegou uma intimação"
+    override: critical
+  - id: SIG-REGULATOR
+    name: Exposição regulatória
+    description: Fiscalização, auto de infração ou ameaça de reclamar em órgão como Procon, ANPD ou fiscalização do trabalho.
+    examples:
+      - "disse que vai reclamar no Procon"
+      - "o fiscal do trabalho esteve aqui"
+    risk: high
+  - id: SIG-INCIDENT
+    name: Incidente com dados pessoais
+    description: Vazamento, acesso indevido ou perda de dados pessoais.
+    examples:
+      - "uma planilha com dados de clientes foi enviada para fora"
+      - "acessaram a conta do sistema de RH"
+    override: critical
+  - id: SIG-LABOR-SENSITIVE
+    name: Trabalhista sensível
+    description: Demissão por justa causa, denúncia de assédio, acidente de trabalho ou situação parecida.
+    examples:
+      - "queremos demitir por justa causa"
+      - "um colaborador denunciou assédio do gestor"
+    risk: high
+  - id: SIG-EXPIRY
+    name: Contrato vencendo
+    description: Renovação automática ou fim de vigência próximo.
+    examples:
+      - "o contrato renova automaticamente no mês que vem"
+      - "a vigência acaba no dia 30"
+    urgency: medium
+
+# Prioridade por urgência (linha) e risco (coluna).
+matrix:
+  high: {high: critical, medium: high, low: normal}
+  medium: {high: high, medium: normal, low: low}
+  low: {high: normal, medium: low, low: low}
+
+# Prazo interno por prioridade, em dias úteis (0 = mesmo dia).
+deadlines:
+  critical: 0
+  high: 2
+  normal: 5
+  low: 10
