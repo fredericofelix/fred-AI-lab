@@ -14,6 +14,20 @@ _DETECTOR = Detector(recognizers=[RegexRecognizer()])
 _TAXONOMY = load_taxonomy()
 
 
+TAG_PT = {
+    "[CPF]": "CPF",
+    "[CNPJ]": "CNPJ",
+    "[PIS]": "PIS",
+    "[CNH]": "CNH",
+    "[TITULO_ELEITOR]": "título de eleitor",
+    "[CARTAO]": "cartão",
+    "[EMAIL]": "e-mail",
+    "[TELEFONE]": "telefone",
+    "[CEP]": "CEP",
+    "[DATA_NASCIMENTO]": "data de nascimento",
+}
+
+
 @dataclass(frozen=True)
 class Sanitized:
     text: str
