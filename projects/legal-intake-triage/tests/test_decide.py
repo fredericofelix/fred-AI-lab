@@ -59,6 +59,12 @@ def test_exec_and_value_make_critical(rubric):
     assert (d.urgency, d.risk, d.priority) == ("high", "high", "critical")
 
 
+def test_sensitive_labor_is_high_two_days(rubric):
+    # Fred, 2026-10-21: harassment and dismissal for cause must not wait 5 days.
+    d = decide(_ex("labor", "SIG-LABOR-SENSITIVE"), rubric)
+    assert (d.urgency, d.risk, d.priority, d.internal_deadline_days) == ("medium", "high", "high", 2)
+
+
 def test_uncertainty_reasons(rubric):
     d = decide(_ex("other", confidence="low", missing=["valor do contrato"], secondary="contract"), rubric)
     assert d.review_reasons == ("low_confidence", "missing_info", "type_other", "two_types")

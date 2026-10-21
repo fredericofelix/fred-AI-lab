@@ -136,6 +136,7 @@ signals:
     examples:
       - "queremos demitir por justa causa"
       - "um colaborador denunciou assédio do gestor"
+    urgency: medium
     risk: high
   - id: SIG-EXPIRY
     name: Contrato vencendo
