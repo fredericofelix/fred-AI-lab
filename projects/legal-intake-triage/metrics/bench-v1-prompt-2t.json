@@ -1,0 +1,189 @@
+{
+  "model": "qwen3-4b",
+  "n": 10,
+  "high_risk_recall": 1.0,
+  "high_risk_recall_strict": 0.8571428571428571,
+  "review_rate_design": 0.6,
+  "review_rate_uncertainty": 0.2,
+  "type_accuracy": 0.8,
+  "signal_recall": 0.9,
+  "priority_accuracy": 0.9,
+  "valid_output_rate": 0.9,
+  "mean_seconds": 14.540828670700193,
+  "max_seconds": 53.504591291,
+  "rubric_fit": [],
+  "rows": [
+    {
+      "id": "T-001",
+      "gold_type": "data_subject_rights",
+      "type": "other",
+      "gold_priority": "high",
+      "priority": "low",
+      "gold_signals": [
+        "SIG-REGULATOR"
+      ],
+      "signals": [],
+      "review_reasons": [
+        "invalid_output"
+      ],
+      "valid_output": false,
+      "seconds": 53.5
+    },
+    {
+      "id": "T-002",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-LAUNCH",
+        "SIG-VALUE"
+      ],
+      "signals": [
+        "SIG-LAUNCH",
+        "SIG-VALUE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 11.59
+    },
+    {
+      "id": "T-003",
+      "gold_type": "litigation",
+      "type": "litigation",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-HARD-DEADLINE"
+      ],
+      "signals": [
+        "SIG-HARD-DEADLINE",
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk",
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 12.49
+    },
+    {
+      "id": "T-004",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 10.31
+    },
+    {
+      "id": "T-005",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-CASH",
+        "SIG-EXPIRY"
+      ],
+      "signals": [
+        "SIG-CASH",
+        "SIG-EXPIRY"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 11.72
+    },
+    {
+      "id": "T-006",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [
+        "missing_info"
+      ],
+      "valid_output": true,
+      "seconds": 4.15
+    },
+    {
+      "id": "T-007",
+      "gold_type": "advisory",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 4.44
+    },
+    {
+      "id": "T-008",
+      "gold_type": "compliance",
+      "type": "data_subject_rights",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-INCIDENT"
+      ],
+      "signals": [
+        "SIG-INCIDENT"
+      ],
+      "review_reasons": [
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 9.76
+    },
+    {
+      "id": "T-009",
+      "gold_type": "corporate",
+      "type": "corporate",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-EXEC"
+      ],
+      "signals": [
+        "SIG-EXEC"
+      ],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 6.68
+    },
+    {
+      "id": "T-010",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 20.76
+    }
+  ]
+}

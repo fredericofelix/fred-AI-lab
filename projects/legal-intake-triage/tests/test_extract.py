@@ -26,6 +26,18 @@ def test_prompt_wraps_request_and_forbids_deciding(rubric):
     assert "copie os trechos exatamente como aparecem no texto" in prompt
 
 
+def test_prompt_keeps_the_full_schema(rubric):
+    # Measured 2026-10-21: dropping it saved no time (prefix cache) and cost type accuracy.
+    assert '"properties"' in build_prompt(TEXT, rubric)
+
+
+def test_prompt_prefix_is_identical_across_requests(rubric):
+    # llama.cpp reuses the cached prefix, so only the request at the end is processed per call.
+    a, b = build_prompt("um pedido", rubric), build_prompt("outro pedido bem diferente", rubric)
+    prefix = a.split("<demanda>")[0]
+    assert b.startswith(prefix)
+
+
 def test_retry_prompt_carries_previous_output_and_problems(rubric):
     prompt = build_retry_prompt(TEXT, rubric, '{"type": "tax"}', ["unknown type 'tax'", "missing key 'signals'"])
     assert '{"type": "tax"}' in prompt

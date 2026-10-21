@@ -2,8 +2,27 @@
 
 from __future__ import annotations
 
+import os
+from pathlib import Path
+
 from triage.extract import extraction_schema
 from triage.rubric import Rubric, load_rubric
+
+CGROUP_CPU_MAX = Path("/sys/fs/cgroup/cpu.max")
+
+
+def default_threads(cgroup_cpu_max: Path = CGROUP_CPU_MAX) -> int:
+    """CPUs this process may really use: TRIAGE_THREADS, else the container quota, else cpu_count."""
+    if os.environ.get("TRIAGE_THREADS"):
+        return int(os.environ["TRIAGE_THREADS"])
+    try:
+        quota, period = cgroup_cpu_max.read_text().split()
+        if quota != "max":
+            return max(1, int(quota) // int(period))
+    except (OSError, ValueError):
+        pass
+    return os.cpu_count() or 1
+
 
 # key: (Hugging Face repo, GGUF file, system message)
 CANDIDATES: dict[str, tuple[str, str, str | None]] = {
@@ -37,7 +56,10 @@ class LlamaCppExtractor:
     def _load(self):
         from llama_cpp import Llama  # heavy import, only when a model actually runs
 
-        self._llm = Llama.from_pretrained(self._repo_id, self._filename, n_ctx=self._n_ctx, verbose=False)
+        threads = default_threads()
+        self._llm = Llama.from_pretrained(
+            self._repo_id, self._filename, n_ctx=self._n_ctx, n_threads=threads, n_threads_batch=threads, verbose=False
+        )
 
     def __call__(self, prompt: str) -> str:
         if self._llm is None:
