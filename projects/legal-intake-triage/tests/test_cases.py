@@ -63,7 +63,12 @@ def test_duplicate_case_id(tmp_path, rubric):
 
 def test_repo_cases_cover_hard_cases(rubric):
     cases = load_cases(REPO_CASES, rubric)
-    assert len(cases) >= 10
-    assert all(c.status == "provisional" for c in cases)
+    assert len(cases) == 40
+    assert all(c.status == "final" for c in cases)  # labeled by Fred, 2026-10-22
     assert {c.hard_case for c in cases} >= {"ambiguous", "two_types", "hidden_urgency", "disguised_dsar"}
     assert cases[0].id == "T-001" and cases[0].hard_case == "disguised_dsar"
+
+
+def test_rubric_fit_case_recorded(rubric):
+    by_id = {c.id: c for c in load_cases(REPO_CASES, rubric)}
+    assert by_id["T-032"].fred_priority == "high"
