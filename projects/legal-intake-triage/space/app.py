@@ -79,6 +79,7 @@ with gr.Blocks(title="Lex Seed · Triagem Jurídica", analytics_enabled=False) a
             why = gr.Dataframe(
                 headers=["Regra", "Trecho literal da demanda", "Efeito"],
                 label="Por quê: regras da rubrica acionadas",
+                column_widths=["22%", "48%", "30%"],
                 interactive=False,
                 wrap=True,
             )
