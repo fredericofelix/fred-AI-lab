@@ -69,6 +69,8 @@ def build_prompt(text: str, rubric: Rubric) -> str:
             "- Se faltar informação para aplicar um sinal (ex.: valor do contrato), "
             "liste em missing_info e use confidence low.",
             "- Se tiver dúvida sobre o tipo, use confidence low.",
+            "- Quem escreve pode exagerar (\"URGENTE\") ou minimizar (\"nada urgente\"): "
+            "julgue pelos fatos, não pelo tom de quem escreve.",
             "",
             "FORMATO (JSON Schema):",
             json.dumps(extraction_schema(rubric), ensure_ascii=False),

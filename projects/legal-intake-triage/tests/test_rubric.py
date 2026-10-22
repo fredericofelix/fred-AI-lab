@@ -89,3 +89,17 @@ def test_public_complaint_counts_as_exposure():
     # Fred, 2026-10-22: signs of corruption or fraud are exposure too (Lei 12.846/2013).
     assert "corrupção" in s.description and "fraude" in s.description
     assert s.risk == "high"
+
+
+def test_hard_deadline_covers_court_mail_even_when_called_not_urgent():
+    # v0 eval: the model believed "nada urgente" about a letter from court (T-029).
+    s = load_rubric().signals["SIG-HARD-DEADLINE"]
+    assert "carta do fórum" in s.description
+    assert "mesmo que digam que não é urgente" in s.description
+
+
+def test_cash_impact_names_penalties_and_termination():
+    # v0 eval: penalties and termination were missed as cash impact (T-005, T-014).
+    s = load_rubric().signals["SIG-CASH"]
+    for word in ("multa", "rescisão", "atraso"):
+        assert word in s.description

@@ -99,7 +99,9 @@ signals:
     min_value: 50000
   - id: SIG-CASH
     name: Impacto no caixa
-    description: Afeta o caixa da empresa, como pagamento, cobrança, retenção ou multa relevante.
+    description: >-
+      Afeta o caixa da empresa: pagamento, cobrança, atraso de pagamento, retenção, multa contratual
+      ou rescisão de contrato com cliente ou fornecedor.
     examples:
       - "o fornecedor vai cobrar multa"
       - "o cliente suspendeu o pagamento"
@@ -113,7 +115,9 @@ signals:
     urgency: high
   - id: SIG-HARD-DEADLINE
     name: Prazo externo fatal
-    description: Citação, intimação, notificação extrajudicial ou prazo processual ou administrativo correndo.
+    description: >-
+      Citação, intimação, notificação extrajudicial, carta do fórum ou de tribunal, ou prazo processual
+      ou administrativo correndo, mesmo que digam que não é urgente.
     examples:
       - "recebemos uma notificação extrajudicial com prazo de 5 dias"
       - "chegou uma intimação"

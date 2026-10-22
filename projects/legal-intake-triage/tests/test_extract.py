@@ -65,3 +65,7 @@ def test_fake_extractor_raises_queued_exception():
     fake = FakeExtractor([RuntimeError("model crashed")])
     with pytest.raises(RuntimeError, match="model crashed"):
         fake("p")
+
+
+def test_prompt_says_judge_facts_not_tone(rubric):
+    assert "julgue pelos fatos, não pelo tom de quem escreve" in build_prompt(TEXT, rubric)
