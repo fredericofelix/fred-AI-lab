@@ -131,3 +131,37 @@ def test_robot_icon_is_byte_copy():
     if not SITE_ICON.exists():
         pytest.skip("lex-seed-site not checked out")
     assert (ROOT / "assets" / "icon-robot.svg").read_bytes() == SITE_ICON.read_bytes()
+
+
+def test_theme_uses_brand_tokens_in_light_and_dark():
+    s = views.theme_settings()
+    assert s["button_primary_background_fill"] == "#FFC857"
+    assert s["button_primary_text_color"] == "#2A1E00"
+    assert s["body_background_fill"] == "#1E2428"
+    assert s["body_text_color"] == "#F4F6F5"
+    # Same values in both modes: the page is always dark, so amber never lands on white.
+    for key, value in s.items():
+        if not key.endswith("_dark"):
+            assert s.get(f"{key}_dark", value) == value
+
+
+def test_load_notice_sets_expectations():
+    assert views.LOAD_NOTICE == (
+        "⏱️ A primeira triagem depois de um tempo sem uso pode levar até ~3 minutos, porque o modelo é carregado. "
+        "As seguintes levam cerca de 30 segundos. Os exemplos prontos respondem na hora."
+    )
+
+
+def test_steps_html_says_model_is_loading_on_cold_start():
+    events = [StageEvent("sanitize", True, ""), StageEvent("extract", False, "")]
+    cold = views.steps_html(events, True, model_loaded=False)
+    assert "Carregando o modelo de IA (primeira vez, até ~3 min)" in cold
+    assert "Carregando o modelo" not in views.steps_html(events, True, model_loaded=True)
+
+
+def test_theme_settings_are_valid_gradio_variables():
+    import inspect
+
+    gr = pytest.importorskip("gradio")
+    known = set(inspect.signature(gr.themes.Base.set).parameters)
+    assert set(views.theme_settings()) <= known

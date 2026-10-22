@@ -56,6 +56,10 @@ class LlamaCppExtractor:
         # One llama.cpp instance is not thread-safe: load once, run one request at a time.
         self._lock = threading.Lock()
 
+    @property
+    def loaded(self) -> bool:
+        return self._llm is not None
+
     def _load(self):
         from llama_cpp import Llama  # heavy import, only when a model actually runs
 

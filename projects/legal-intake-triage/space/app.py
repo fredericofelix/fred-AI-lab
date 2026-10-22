@@ -50,7 +50,7 @@ def run(text: str):
             if item.stage == "sanitize" and item.done:
                 # Show Step 1 while the model reads; regex sanitizing twice costs milliseconds.
                 step1 = views.sanitize_html(sanitize(text[:MAX_CHARS]))
-            yield views.steps_html(events, running=True), step1, "", [], ""
+            yield views.steps_html(events, running=True, model_loaded=EXTRACTOR.loaded), step1, "", [], ""
         else:
             yield _render(item, events)
 
@@ -72,6 +72,7 @@ with gr.Blocks(title="Lex Seed · Triagem Jurídica", analytics_enabled=False) a
             text_in = gr.Textbox(label="Ou cole uma demanda", lines=6, max_length=3000)
             gr.Markdown(views.NOTICE)
             button = gr.Button("Triar demanda", variant="primary")
+            gr.Markdown(views.LOAD_NOTICE, elem_classes="load-notice")
             status = gr.Markdown()
             steps = gr.HTML()
             sanitized = gr.HTML()
@@ -113,4 +114,5 @@ with gr.Blocks(title="Lex Seed · Triagem Jurídica", analytics_enabled=False) a
         b.click(lambda i=i: show_example(i), outputs=[text_in, *outputs], api_visibility="private")
 
 if __name__ == "__main__":
-    demo.launch(css=views.CSS)
+    theme = gr.themes.Base(font=gr.themes.GoogleFont("Inter")).set(**views.theme_settings())
+    demo.launch(css=views.CSS, theme=theme, head=views.FONTS_HEAD)

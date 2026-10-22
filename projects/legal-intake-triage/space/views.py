@@ -40,6 +40,28 @@ CTA = (
     "&utm_campaign=triagem-juridica)."
 )
 EMPTY_INPUT = "Cole uma demanda ou escolha um exemplo."
+LOAD_NOTICE = (
+    "⏱️ A primeira triagem depois de um tempo sem uso pode levar até ~3 minutos, porque o modelo é carregado. "
+    "As seguintes levam cerca de 30 segundos. Os exemplos prontos respondem na hora."
+)
+LOADING_LABEL = "Carregando o modelo de IA (primeira vez, até ~3 min)"
+
+# Lex Seed brand tokens (lex-seed-site/docs/brand.md).
+BRAND = {
+    "amber": "#FFC857",
+    "ochre": "#D9A23A",
+    "graphite": "#48535B",
+    "bg_dark": "#1E2428",
+    "fg_dark": "#F4F6F5",
+    "on_accent": "#2A1E00",
+    "muted": "#A9B4B0",
+    "line": "#34404A",
+}
+FONTS_HEAD = (
+    '<link rel="preconnect" href="https://fonts.googleapis.com">'
+    '<link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;600&family=Nunito:wght@800;900'
+    '&display=swap" rel="stylesheet">'
+)
 SANITIZE_LIMIT = "Não detecta nomes nem endereços nesta versão."
 
 REASON_PT = {
@@ -60,20 +82,27 @@ STEPS = [
 ]
 
 CSS = """
+body, .gradio-container { font-family: 'Inter', sans-serif }
+.gradio-container h1, .gradio-container h2, .gradio-container h3 { font-family: 'Nunito', sans-serif; font-weight: 900 }
+.gradio-container h1 { color: #F4F6F5 }
+.tab-wrapper button.selected, button[role="tab"][aria-selected="true"] { color: #FFC857; border-color: #FFC857 }
+.load-notice { color: #A9B4B0; font-size: 14px }
 @keyframes bob { 0%,100% { transform: translateY(0) rotate(0) } 25% { transform: translateY(-6px) rotate(-4deg) }
   75% { transform: translateY(-6px) rotate(4deg) } }
 @keyframes ring { 0% { box-shadow: 0 0 0 0 rgba(255,200,87,.7) } 100% { box-shadow: 0 0 0 22px rgba(255,200,87,0) } }
-.triage-steps { display:flex; gap:18px; align-items:center; padding:16px; border-radius:12px; background:#1f1a12;
-  color:#f5efe2 }
+.triage-steps { display:flex; gap:18px; align-items:center; padding:16px; border-radius:12px; background:#1E2428;
+  border:1px solid #34404A; color:#F4F6F5 }
 .triage-steps .robot { width:72px; height:72px; border-radius:50% }
 .triage-steps .robot.thinking { animation: bob 1.6s ease-in-out infinite, ring 1.6s ease-out infinite }
 .triage-steps .step { margin:4px 0; font-size:14px }
-.triage-steps .done { color:#8bd17c } .triage-steps .now { color:#FFC857 } .triage-steps .next { opacity:.45 }
-.triage-card { border-radius:10px; padding:12px; margin:8px 0; border:1px solid #888 }
+.triage-steps .done { color:#F4F6F5 } .triage-steps .now { color:#FFC857 }
+.triage-steps .next { color:#A9B4B0; opacity:.7 }
+.triage-card { border-radius:10px; padding:12px; margin:8px 0; border:1px solid #34404A }
+/* Privacy Seed's own step: co-branded block, the one place its green appears. */
 .triage-card.detector { border:2px solid #2e7d32 }
 .triage-cards { display:flex; flex-wrap:wrap; gap:10px }
-.triage-cards div { border:1px solid #888; border-radius:8px; padding:8px 12px }
-.triage-cards .priority { border:2px solid #B07800 }
+.triage-cards div { border:1px solid #48535B; border-radius:8px; padding:8px 12px }
+.triage-cards .priority { border:2px solid #FFC857 }
 """
 
 
@@ -85,7 +114,7 @@ def validate_input(text: str) -> str | None:
     return EMPTY_INPUT if not (text or "").strip() else None
 
 
-def steps_html(events: list[StageEvent], running: bool) -> str:
+def steps_html(events: list[StageEvent], running: bool, model_loaded: bool = True) -> str:
     done = {e.stage: e.detail for e in events if e.done}
     started = {e.stage for e in events}
     rows = []
@@ -94,7 +123,8 @@ def steps_html(events: list[StageEvent], running: bool) -> str:
             detail = f" ({html.escape(done[stage])})" if done[stage] else ""
             rows.append(f'<div class="step done">✓ {label}{detail}</div>')
         elif stage in started:
-            rows.append(f'<div class="step now">● {label}…</div>')
+            now = LOADING_LABEL if stage == "extract" and not model_loaded else label
+            rows.append(f'<div class="step now">● {now}…</div>')
         else:
             rows.append(f'<div class="step next">○ {label}</div>')
     robot_class = "robot thinking" if running else "robot"
@@ -190,3 +220,40 @@ def example_run(example: dict, rubric: Rubric) -> TriageRun:
     sanitized = sanitize(example["text"])
     extraction = parse_extraction(json.dumps(example["extraction"], ensure_ascii=False), rubric, sanitized.text)
     return TriageRun(example["text"], False, sanitized, extraction, decide(extraction, rubric), 1, example["seconds"])
+
+
+def theme_settings() -> dict[str, str]:
+    """Gradio theme variables; light and dark get the same dark values, so the page is always dark."""
+    b = BRAND
+    base = {
+        "body_background_fill": b["bg_dark"],
+        "body_text_color": b["fg_dark"],
+        "body_text_color_subdued": b["muted"],
+        "background_fill_primary": b["bg_dark"],
+        "background_fill_secondary": "#252C31",
+        "block_background_fill": "#252C31",
+        "block_label_text_color": b["muted"],
+        "block_title_text_color": b["fg_dark"],
+        "border_color_primary": b["line"],
+        "border_color_accent": b["amber"],
+        "input_background_fill": b["bg_dark"],
+        "input_border_color_focus": b["amber"],
+        "link_text_color": b["amber"],
+        "link_text_color_hover": b["ochre"],
+        "link_text_color_visited": b["amber"],
+        "button_primary_background_fill": b["amber"],
+        "button_primary_background_fill_hover": b["ochre"],
+        "button_primary_text_color": b["on_accent"],
+        "button_primary_border_color": b["amber"],
+        "button_secondary_background_fill": b["graphite"],
+        "button_secondary_background_fill_hover": b["graphite"],
+        "button_secondary_text_color": b["fg_dark"],
+        "button_secondary_border_color": b["graphite"],
+        "button_secondary_border_color_hover": b["amber"],
+        "color_accent": b["amber"],
+        "color_accent_soft": b["line"],
+        "table_even_background_fill": "#252C31",
+        "table_odd_background_fill": b["bg_dark"],
+    }
+    no_dark_variant = {"color_accent", "color_accent_soft"}
+    return {**base, **{f"{k}_dark": v for k, v in base.items() if k not in no_dark_variant}}

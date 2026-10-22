@@ -70,3 +70,10 @@ def test_default_model_is_a_candidate():
 def test_unknown_name_lists_known_ones():
     with pytest.raises(KeyError, match="qwen3-4b"):
         get_extractor("gpt-9")
+
+
+def test_loaded_flag_follows_model_state():
+    ex = get_extractor(DEFAULT_MODEL)
+    assert ex.loaded is False
+    ex._llm = object()
+    assert ex.loaded is True
