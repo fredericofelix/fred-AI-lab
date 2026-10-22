@@ -7,6 +7,7 @@ from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Literal
 
+from triage.checks import check_values
 from triage.decide import Decision, decide, fallback
 from triage.extract import Extractor, build_prompt, build_retry_prompt
 from triage.extraction import Extraction
@@ -76,7 +77,16 @@ def triage(text: str, rubric: Rubric, extractor: Extractor) -> Iterator[StageEve
 
     yield StageEvent("check", False, "")
     ok = extraction is not None
-    yield StageEvent("check", True, "regras e trechos conferidos" if ok else "saída inválida: vai para revisão humana")
+    dropped: list[str] = []
+    if ok:
+        extraction, dropped = check_values(extraction, rubric)
+    if not ok:
+        check_detail = "saída inválida: vai para revisão humana"
+    elif dropped:
+        check_detail = "sinal descartado: " + "; ".join(dropped)
+    else:
+        check_detail = "regras e trechos conferidos"
+    yield StageEvent("check", True, check_detail)
 
     yield StageEvent("decide", False, "")
     decision = decide(extraction, rubric) if ok else fallback(rubric)

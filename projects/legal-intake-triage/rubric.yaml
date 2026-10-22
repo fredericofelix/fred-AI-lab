@@ -95,6 +95,8 @@ signals:
       - "contrato de R$ 120 mil por ano"
       - "proposta de 80 mil"
     risk: high
+    # Conferido por código: o trecho citado precisa trazer um valor acima deste.
+    min_value: 50000
   - id: SIG-CASH
     name: Impacto no caixa
     description: Afeta o caixa da empresa, como pagamento, cobrança, retenção ou multa relevante.

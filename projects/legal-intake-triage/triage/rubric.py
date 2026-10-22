@@ -41,6 +41,7 @@ class Signal:
     urgency: Level | None
     risk: Level | None
     override: Priority | None
+    min_value: int | None = None  # checked by code against the quoted span (triage.checks)
 
 
 @dataclass(frozen=True)
@@ -100,6 +101,7 @@ def _signal(d: dict) -> Signal:
         urgency=_level(d.get("urgency"), where, optional=True),
         risk=_level(d.get("risk"), where, optional=True),
         override=_priority(d.get("override"), where, optional=True),
+        min_value=d.get("min_value"),
     )
     if signal.urgency is None and signal.risk is None and signal.override is None:
         raise RubricError(f"{where}: needs urgency, risk or override")

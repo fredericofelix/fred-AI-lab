@@ -72,3 +72,21 @@ def test_model_only_sees_masked_text(rubric):
 def test_long_input_is_truncated(rubric):
     run = run_triage("a" * 3500, rubric, FakeExtractor(["x", "x"]))
     assert run.truncated and len(run.input_text) == MAX_CHARS == 3000
+
+
+def test_value_signal_below_threshold_is_dropped_and_reported(rubric):
+    low = json.dumps(
+        {
+            "type": "contract",
+            "type_span": "Contrato",
+            "signals": [{"id": "SIG-VALUE", "span": "R$ 90 mil"}],
+            "confidence": "high",
+        }
+    )
+    text = "Contrato de R$ 90 mil com o fornecedor para revisar."
+    items = list(triage(text.replace("90", "40"), rubric, FakeExtractor([low.replace("90", "40")])))
+    run = items[-1]
+    assert run.extraction.signals == ()
+    assert run.decision.risk == "medium"
+    check = next(e for e in items[:-1] if isinstance(e, StageEvent) and e.stage == "check" and e.done)
+    assert "não passa de R$ 50.000" in check.detail
