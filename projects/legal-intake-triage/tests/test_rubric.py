@@ -84,6 +84,8 @@ def test_bad_rubric_raises(tmp_path, mutate, needle):
 def test_public_complaint_counts_as_exposure():
     # Fred, 2026-10-22: an angry customer threatening Reclame Aqui is real exposure, like Procon.
     s = load_rubric().signals["SIG-REGULATOR"]
-    assert s.name == "Exposição regulatória ou reputacional"
+    assert s.name == "Exposição regulatória, reputacional ou ilícito grave"
     assert "Reclame Aqui" in s.description
+    # Fred, 2026-10-22: signs of corruption or fraud are exposure too (Lei 12.846/2013).
+    assert "corrupção" in s.description and "fraude" in s.description
     assert s.risk == "high"

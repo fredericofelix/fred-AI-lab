@@ -25,3 +25,13 @@ Fictional people and companies only. T-001 to T-010 are the reviewed provisional
 | T-028 | Contrato com agência de eventos para a festa de fim de ano, R$ 49 mil | contract | — | trap: value just under R$ 50 mil |
 | T-029 | Recepção: "chegou uma carta do fórum para a empresa, deixei na mesa do jurídico, nada urgente" | litigation | SIG-HARD-DEADLINE | hidden urgency (service of process) |
 | T-030 | Cliente pede correção do endereço, já pediu 2 vezes, vai postar no Reclame Aqui | data_subject_rights | SIG-REGULATOR | public complaint counts (Fred, rubric updated) |
+| T-031 | Produto precisa dos termos de uso e política de privacidade do app novo, que lança na terça | contract (+ compliance) | SIG-LAUNCH | two types |
+| T-032 | "Só para registro": cliente vai rescindir contrato de R$ 300 mil por descumprimento de SLA, multa de 20% | contract | SIG-VALUE, SIG-CASH | hidden urgency |
+| T-033 | Colaborador pediu demissão e pergunta se recebe a multa do FGTS | labor | — | |
+| T-034 | Candidata a vaga pede para apagar o currículo do banco de talentos | data_subject_rights | — | |
+| T-035 | Canal de ética: denúncia de que vendedor oferece "agrado" a comprador de cliente público | compliance | SIG-REGULATOR | serious wrongdoing counts (Fred, rubric updated) |
+| T-036 | Marketing quer escrever "o melhor café de BH" na embalagem | advisory | — | |
+| T-037 | "O que muda para a gente com a reforma tributária?" | advisory | — | |
+| T-038 | Assistente do CFO: "ele quer saber ainda hoje se pode assinar as procurações digitalmente" | corporate | SIG-EXEC | request on behalf of the board |
+| T-039 | "Podemos usar imagem gerada por IA no site?" | advisory | — | |
+| T-040 | "Quem reserva a sala de reunião do 3º andar?" | other | — | |
