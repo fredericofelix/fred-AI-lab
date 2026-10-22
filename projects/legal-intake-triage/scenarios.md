@@ -15,3 +15,13 @@ Fictional people and companies only. T-001 to T-010 are the reviewed provisional
 | T-018 | Diretora comercial precisa do NDA assinado antes da reunião com investidor amanhã | contract | SIG-EXEC | |
 | T-019 | Pergunta se o processo trabalhista do ex-gerente "que acabou ano passado" deixou pendência | litigation | — | trap: closed lawsuit |
 | T-020 | TI: notebook de vendedor com a base de clientes foi furtado no carro | compliance | SIG-INCIDENT | incident hidden in a theft report |
+| T-021 | Fornecedor do ERP avisa que o contrato renova sozinho em 10 dias, R$ 96 mil/ano, reajuste de 12% | contract | SIG-EXPIRY, SIG-VALUE | |
+| T-022 | Gestor pergunta se pode pedir para a equipe trabalhar no feriado de 15/11 | labor | — | simple question |
+| T-023 | Ex-colaborador pede "declaração com todos os dados que a empresa tem sobre mim" para usar em processo | data_subject_rights (+ labor) | — | two types; disguised data subject request |
+| T-024 | Sócio minoritário quer sair; o CEO pediu parecer sobre apuração de haveres até sexta | corporate | SIG-EXEC | |
+| T-025 | "Vocês indicam um bom contador para a minha declaração de IR pessoal?" | other | — | not a company legal matter |
+| T-026 | Gerente quer instalar câmera na sala de descanso dos funcionários "por segurança" | labor (+ advisory) | — | ambiguous |
+| T-027 | Procon autuou uma loja por preço divergente na gôndola, 10 dias para defesa | compliance | SIG-REGULATOR, SIG-HARD-DEADLINE | |
+| T-028 | Contrato com agência de eventos para a festa de fim de ano, R$ 49 mil | contract | — | trap: value just under R$ 50 mil |
+| T-029 | Recepção: "chegou uma carta do fórum para a empresa, deixei na mesa do jurídico, nada urgente" | litigation | SIG-HARD-DEADLINE | hidden urgency (service of process) |
+| T-030 | Cliente pede correção do endereço, já pediu 2 vezes, vai postar no Reclame Aqui | data_subject_rights | SIG-REGULATOR | public complaint counts (Fred, rubric updated) |

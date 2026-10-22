@@ -79,3 +79,11 @@ def _signal_without_effect(d):
 def test_bad_rubric_raises(tmp_path, mutate, needle):
     with pytest.raises(RubricError, match=needle):
         load_rubric(_write_broken(tmp_path, mutate))
+
+
+def test_public_complaint_counts_as_exposure():
+    # Fred, 2026-10-22: an angry customer threatening Reclame Aqui is real exposure, like Procon.
+    s = load_rubric().signals["SIG-REGULATOR"]
+    assert s.name == "Exposição regulatória ou reputacional"
+    assert "Reclame Aqui" in s.description
+    assert s.risk == "high"

@@ -117,11 +117,14 @@ signals:
       - "chegou uma intimação"
     override: critical
   - id: SIG-REGULATOR
-    name: Exposição regulatória
-    description: Fiscalização, auto de infração ou ameaça de reclamar em órgão como Procon, ANPD ou fiscalização do trabalho.
+    name: Exposição regulatória ou reputacional
+    description: >-
+      Fiscalização, auto de infração ou ameaça de reclamar em órgão como Procon, ANPD ou fiscalização do trabalho,
+      ou ameaça de reclamar em público (Reclame Aqui, redes sociais).
     examples:
       - "disse que vai reclamar no Procon"
       - "o fiscal do trabalho esteve aqui"
+      - "vai postar no Reclame Aqui"
     risk: high
   - id: SIG-INCIDENT
     name: Incidente com dados pessoais
