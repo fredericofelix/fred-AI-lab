@@ -3,6 +3,7 @@
 from __future__ import annotations
 
 import os
+import threading
 from pathlib import Path
 
 from triage.extract import extraction_schema
@@ -52,6 +53,8 @@ class LlamaCppExtractor:
         self._schema = extraction_schema(rubric or load_rubric())
         self._n_ctx, self._max_tokens = n_ctx, max_tokens
         self._llm = None
+        # One llama.cpp instance is not thread-safe: load once, run one request at a time.
+        self._lock = threading.Lock()
 
     def _load(self):
         from llama_cpp import Llama  # heavy import, only when a model actually runs
@@ -62,8 +65,12 @@ class LlamaCppExtractor:
         )
 
     def __call__(self, prompt: str) -> str:
-        if self._llm is None:
-            self._load()
+        with self._lock:
+            if self._llm is None:
+                self._load()
+            return self._complete(prompt)
+
+    def _complete(self, prompt: str) -> str:
         messages = [{"role": "user", "content": prompt}]
         if self._system:
             messages.insert(0, {"role": "system", "content": self._system})

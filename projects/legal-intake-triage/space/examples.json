@@ -1,0 +1,115 @@
+[
+  {
+    "id": "T-001",
+    "label": "Reclamação que é pedido de titular",
+    "text": "Oi pessoal do jurídico, chegou no SAC uma reclamação de uma cliente bem brava: diz que continua recebendo nossas mensagens de promoção mesmo depois de cancelar a conta. Ela quer saber quais dados ainda temos dela e pediu pra apagar tudo, senão vai reclamar no Procon. Como respondo?",
+    "extraction": {
+      "type": "data_subject_rights",
+      "type_span": "pediu pra apagar tudo",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-REGULATOR",
+          "span": "vai reclamar no Procon"
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 7.6
+  },
+  {
+    "id": "T-002",
+    "label": "Contrato com lançamento na quinta",
+    "text": "Time, o fornecedor da plataforma de pagamentos mandou a minuta do contrato novo, valor de R$ 240 mil por ano. Precisamos assinar antes do lançamento do app, que é na próxima quinta. Conseguem revisar?",
+    "extraction": {
+      "type": "contract",
+      "type_span": "Time, o fornecedor da plataforma de pagamentos mandou a minuta do contrato novo, valor de R$ 240 mil por ano. Precisamos assinar antes do lançamento do app, que é na próxima quinta. Conseguem revisar?",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-VALUE",
+          "span": "valor de R$ 240 mil por ano"
+        },
+        {
+          "id": "SIG-LAUNCH",
+          "span": "antes do lançamento do app, que é na próxima quinta"
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 18.7
+  },
+  {
+    "id": "T-003",
+    "label": "Citação pelo correio",
+    "text": "Chegou hoje pelo correio uma citação de um processo de um ex-cliente pedindo indenização. A recepção recebeu e me passou. O que eu faço?",
+    "extraction": {
+      "type": "litigation",
+      "type_span": "Chegou hoje pelo correio uma citação de um processo de um ex-cliente pedindo indenização. A recepção recebeu e me passou. O que eu faço?",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-HARD-DEADLINE",
+          "span": "Chegou hoje pelo correio uma citação de um processo de um ex-cliente pedindo indenização. A recepção recebeu e me passou."
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 15.4
+  },
+  {
+    "id": "T-004",
+    "label": "Denúncia de assédio",
+    "text": "Preciso de ajuda: uma colaboradora do time de operações denunciou o gestor por assédio no canal de ética. O RH quer saber os próximos passos.",
+    "extraction": {
+      "type": "labor",
+      "type_span": "uma colaboradora do time de operações denunciou o gestor por assédio no canal de ética. O RH quer saber os próximos passos.",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-LABOR-SENSITIVE",
+          "span": "uma colaboradora do time de operações denunciou o gestor por assédio no canal de ética. O RH quer saber os próximos passos."
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 12.9
+  },
+  {
+    "id": "T-007",
+    "label": "Música no Instagram",
+    "text": "Posso usar uma música famosa no vídeo do Instagram da empresa se for só 15 segundos?",
+    "extraction": {
+      "type": "advisory",
+      "type_span": "Posso usar uma música famosa no vídeo do Instagram da empresa se for só 15 segundos?",
+      "secondary_type": null,
+      "signals": [],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 5.5
+  },
+  {
+    "id": "T-010",
+    "label": "Justa causa (com CPF fictício)",
+    "text": "Precisamos desligar o colaborador Paulo Mendes, CPF 318.447.205-19, por justa causa: ele faltou 40 dias sem justificativa. Qual o procedimento?",
+    "extraction": {
+      "type": "labor",
+      "type_span": "Precisamos desligar o colaborador Paulo Mendes, CPF [CPF], por justa causa: ele faltou 40 dias sem justificativa. Qual o procedimento?",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-LABOR-SENSITIVE",
+          "span": "Precisamos desligar o colaborador Paulo Mendes, CPF [CPF], por justa causa: ele faltou 40 dias sem justificativa."
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 26.1
+  }
+]

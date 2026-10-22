@@ -31,6 +31,38 @@ def test_every_candidate_resolves_without_loading_the_model():
         assert ex._llm is None  # weights load on first call, not on lookup
 
 
+def test_concurrent_calls_load_once_and_never_overlap(monkeypatch):
+    # The Space warms the model up in a thread while visitors may already submit requests.
+    import threading
+    import time
+
+    ex = get_extractor(DEFAULT_MODEL)
+    loads, active, overlaps = [], [0], []
+
+    class FakeLlama:
+        def create_chat_completion(self, **_):
+            active[0] += 1
+            if active[0] > 1:
+                overlaps.append(True)
+            time.sleep(0.05)
+            active[0] -= 1
+            return {"choices": [{"message": {"content": "{}"}}]}
+
+    def fake_load():
+        loads.append(1)
+        time.sleep(0.05)
+        ex._llm = FakeLlama()
+
+    monkeypatch.setattr(ex, "_load", fake_load)
+    threads = [threading.Thread(target=ex, args=("p",)) for _ in range(4)]
+    for t in threads:
+        t.start()
+    for t in threads:
+        t.join()
+    assert len(loads) == 1
+    assert not overlaps
+
+
 def test_default_model_is_a_candidate():
     assert DEFAULT_MODEL in CANDIDATES
 
