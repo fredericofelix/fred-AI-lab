@@ -16,7 +16,26 @@
       "confidence": "high",
       "missing_info": []
     },
-    "seconds": 7.6
+    "seconds": 17.9
+  },
+  {
+    "id": "T-029",
+    "label": "Carta do fórum, \"nada urgente\"",
+    "text": "Oi, aqui é da recepção. Chegou uma carta do fórum para a empresa, deixei na mesa do jurídico. Nada urgente, só para vocês saberem.",
+    "extraction": {
+      "type": "litigation",
+      "type_span": "Chegou uma carta do fórum para a empresa",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-HARD-DEADLINE",
+          "span": "Chegou uma carta do fórum para a empresa"
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 35.5
   },
   {
     "id": "T-002",
@@ -39,26 +58,26 @@
       "confidence": "high",
       "missing_info": []
     },
-    "seconds": 18.7
+    "seconds": 26.3
   },
   {
-    "id": "T-003",
-    "label": "Citação pelo correio",
-    "text": "Chegou hoje pelo correio uma citação de um processo de um ex-cliente pedindo indenização. A recepção recebeu e me passou. O que eu faço?",
+    "id": "T-020",
+    "label": "Notebook furtado com base de clientes",
+    "text": "TI aqui. Ontem à noite furtaram o notebook de um vendedor de dentro do carro. Ele tinha a planilha com a base de clientes salva na área de trabalho. Já bloqueamos o acesso dele ao sistema.",
     "extraction": {
-      "type": "litigation",
-      "type_span": "Chegou hoje pelo correio uma citação de um processo de um ex-cliente pedindo indenização. A recepção recebeu e me passou. O que eu faço?",
+      "type": "compliance",
+      "type_span": "TI aqui. Ontem à noite furtaram o notebook de um vendedor de dentro do carro. Ele tinha a planilha com a base de clientes salva na área de trabalho. Já bloqueamos o acesso dele ao sistema.",
       "secondary_type": null,
       "signals": [
         {
-          "id": "SIG-HARD-DEADLINE",
-          "span": "Chegou hoje pelo correio uma citação de um processo de um ex-cliente pedindo indenização. A recepção recebeu e me passou."
+          "id": "SIG-INCIDENT",
+          "span": "furtaram o notebook de um vendedor de dentro do carro. Ele tinha a planilha com a base de clientes salva na área de trabalho. Já bloqueamos o acesso dele ao sistema."
         }
       ],
       "confidence": "high",
       "missing_info": []
     },
-    "seconds": 15.4
+    "seconds": 22.1
   },
   {
     "id": "T-004",
@@ -77,21 +96,7 @@
       "confidence": "high",
       "missing_info": []
     },
-    "seconds": 12.9
-  },
-  {
-    "id": "T-007",
-    "label": "Música no Instagram",
-    "text": "Posso usar uma música famosa no vídeo do Instagram da empresa se for só 15 segundos?",
-    "extraction": {
-      "type": "advisory",
-      "type_span": "Posso usar uma música famosa no vídeo do Instagram da empresa se for só 15 segundos?",
-      "secondary_type": null,
-      "signals": [],
-      "confidence": "high",
-      "missing_info": []
-    },
-    "seconds": 5.5
+    "seconds": 23.3
   },
   {
     "id": "T-010",
@@ -110,6 +115,6 @@
       "confidence": "high",
       "missing_info": []
     },
-    "seconds": 26.1
+    "seconds": 47.2
   }
 ]

@@ -1,0 +1,651 @@
+{
+  "model": "qwen3-4b",
+  "n": 40,
+  "high_risk_recall": 0.9411764705882353,
+  "high_risk_recall_strict": 0.9411764705882353,
+  "review_rate_design": 0.45,
+  "review_rate_uncertainty": 0.075,
+  "type_accuracy": 0.85,
+  "signal_recall": 0.8620689655172413,
+  "priority_accuracy": 0.825,
+  "valid_output_rate": 0.975,
+  "mean_seconds": 16.87765456877503,
+  "max_seconds": 68.2651918749998,
+  "rubric_fit": [
+    {
+      "id": "T-032",
+      "rubric_priority": "normal",
+      "fred_priority": "high"
+    }
+  ],
+  "rows": [
+    {
+      "id": "T-001",
+      "gold_type": "data_subject_rights",
+      "type": "data_subject_rights",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-REGULATOR"
+      ],
+      "signals": [
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 68.27
+    },
+    {
+      "id": "T-002",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-LAUNCH",
+        "SIG-VALUE"
+      ],
+      "signals": [
+        "SIG-LAUNCH",
+        "SIG-VALUE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 18.92
+    },
+    {
+      "id": "T-003",
+      "gold_type": "litigation",
+      "type": "litigation",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-HARD-DEADLINE"
+      ],
+      "signals": [
+        "SIG-HARD-DEADLINE"
+      ],
+      "review_reasons": [
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 20.31
+    },
+    {
+      "id": "T-004",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 24.74
+    },
+    {
+      "id": "T-005",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "high",
+      "priority": "normal",
+      "gold_signals": [
+        "SIG-CASH",
+        "SIG-EXPIRY"
+      ],
+      "signals": [
+        "SIG-EXPIRY"
+      ],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 20.98
+    },
+    {
+      "id": "T-006",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [
+        "missing_info"
+      ],
+      "valid_output": true,
+      "seconds": 11.58
+    },
+    {
+      "id": "T-007",
+      "gold_type": "advisory",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 8.99
+    },
+    {
+      "id": "T-008",
+      "gold_type": "compliance",
+      "type": "compliance",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-INCIDENT"
+      ],
+      "signals": [
+        "SIG-EXEC",
+        "SIG-INCIDENT"
+      ],
+      "review_reasons": [
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 31.68
+    },
+    {
+      "id": "T-009",
+      "gold_type": "corporate",
+      "type": "corporate",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-EXEC"
+      ],
+      "signals": [
+        "SIG-EXEC"
+      ],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 13.01
+    },
+    {
+      "id": "T-010",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 38.14
+    },
+    {
+      "id": "T-011",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 13.95
+    },
+    {
+      "id": "T-012",
+      "gold_type": "data_subject_rights",
+      "type": "data_subject_rights",
+      "gold_priority": "normal",
+      "priority": "normal",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 12.27
+    },
+    {
+      "id": "T-013",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 10.83
+    },
+    {
+      "id": "T-014",
+      "gold_type": "litigation",
+      "type": "contract",
+      "gold_priority": "high",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-CASH",
+        "SIG-VALUE"
+      ],
+      "signals": [
+        "SIG-CASH",
+        "SIG-HARD-DEADLINE",
+        "SIG-VALUE"
+      ],
+      "review_reasons": [
+        "high_risk",
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 27.79
+    },
+    {
+      "id": "T-015",
+      "gold_type": "advisory",
+      "type": "contract",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 8.17
+    },
+    {
+      "id": "T-016",
+      "gold_type": "compliance",
+      "type": "compliance",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-HARD-DEADLINE",
+        "SIG-REGULATOR"
+      ],
+      "signals": [
+        "SIG-HARD-DEADLINE",
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk",
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 22.78
+    },
+    {
+      "id": "T-017",
+      "gold_type": "labor",
+      "type": "advisory",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 21.82
+    },
+    {
+      "id": "T-018",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-EXEC"
+      ],
+      "signals": [
+        "SIG-EXEC"
+      ],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 10.5
+    },
+    {
+      "id": "T-019",
+      "gold_type": "litigation",
+      "type": "litigation",
+      "gold_priority": "normal",
+      "priority": "normal",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 10.93
+    },
+    {
+      "id": "T-020",
+      "gold_type": "compliance",
+      "type": "compliance",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-INCIDENT"
+      ],
+      "signals": [
+        "SIG-INCIDENT"
+      ],
+      "review_reasons": [
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 19.46
+    },
+    {
+      "id": "T-021",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-EXPIRY",
+        "SIG-VALUE"
+      ],
+      "signals": [
+        "SIG-EXPIRY",
+        "SIG-VALUE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 21.46
+    },
+    {
+      "id": "T-022",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 8.96
+    },
+    {
+      "id": "T-023",
+      "gold_type": "data_subject_rights",
+      "type": "data_subject_rights",
+      "gold_priority": "normal",
+      "priority": "high",
+      "gold_signals": [],
+      "signals": [
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 10.79
+    },
+    {
+      "id": "T-024",
+      "gold_type": "corporate",
+      "type": "corporate",
+      "gold_priority": "high",
+      "priority": "low",
+      "gold_signals": [
+        "SIG-EXEC"
+      ],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 10.58
+    },
+    {
+      "id": "T-025",
+      "gold_type": "other",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 8.73
+    },
+    {
+      "id": "T-026",
+      "gold_type": "labor",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 9.57
+    },
+    {
+      "id": "T-027",
+      "gold_type": "compliance",
+      "type": "compliance",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-HARD-DEADLINE",
+        "SIG-REGULATOR"
+      ],
+      "signals": [
+        "SIG-HARD-DEADLINE",
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk",
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 20.21
+    },
+    {
+      "id": "T-028",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 13.28
+    },
+    {
+      "id": "T-029",
+      "gold_type": "litigation",
+      "type": "litigation",
+      "gold_priority": "critical",
+      "priority": "critical",
+      "gold_signals": [
+        "SIG-HARD-DEADLINE"
+      ],
+      "signals": [
+        "SIG-HARD-DEADLINE"
+      ],
+      "review_reasons": [
+        "override"
+      ],
+      "valid_output": true,
+      "seconds": 11.46
+    },
+    {
+      "id": "T-030",
+      "gold_type": "data_subject_rights",
+      "type": "data_subject_rights",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-REGULATOR"
+      ],
+      "signals": [
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 13.79
+    },
+    {
+      "id": "T-031",
+      "gold_type": "contract",
+      "type": "other",
+      "gold_priority": "high",
+      "priority": "low",
+      "gold_signals": [
+        "SIG-LAUNCH"
+      ],
+      "signals": [],
+      "review_reasons": [
+        "invalid_output"
+      ],
+      "valid_output": false,
+      "seconds": 25.65
+    },
+    {
+      "id": "T-032",
+      "gold_type": "contract",
+      "type": "contract",
+      "gold_priority": "normal",
+      "priority": "normal",
+      "gold_signals": [
+        "SIG-CASH",
+        "SIG-VALUE"
+      ],
+      "signals": [
+        "SIG-CASH",
+        "SIG-VALUE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 18.73
+    },
+    {
+      "id": "T-033",
+      "gold_type": "labor",
+      "type": "labor",
+      "gold_priority": "low",
+      "priority": "high",
+      "gold_signals": [],
+      "signals": [
+        "SIG-LABOR-SENSITIVE"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 14.91
+    },
+    {
+      "id": "T-034",
+      "gold_type": "data_subject_rights",
+      "type": "data_subject_rights",
+      "gold_priority": "normal",
+      "priority": "normal",
+      "gold_signals": [],
+      "signals": [
+        "SIG-EXPIRY"
+      ],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 11.61
+    },
+    {
+      "id": "T-035",
+      "gold_type": "compliance",
+      "type": "compliance",
+      "gold_priority": "high",
+      "priority": "high",
+      "gold_signals": [
+        "SIG-REGULATOR"
+      ],
+      "signals": [
+        "SIG-REGULATOR"
+      ],
+      "review_reasons": [
+        "high_risk"
+      ],
+      "valid_output": true,
+      "seconds": 24.27
+    },
+    {
+      "id": "T-036",
+      "gold_type": "advisory",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 5.66
+    },
+    {
+      "id": "T-037",
+      "gold_type": "advisory",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 8.18
+    },
+    {
+      "id": "T-038",
+      "gold_type": "corporate",
+      "type": "corporate",
+      "gold_priority": "high",
+      "priority": "low",
+      "gold_signals": [
+        "SIG-EXEC"
+      ],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 6.88
+    },
+    {
+      "id": "T-039",
+      "gold_type": "advisory",
+      "type": "advisory",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [],
+      "valid_output": true,
+      "seconds": 7.8
+    },
+    {
+      "id": "T-040",
+      "gold_type": "other",
+      "type": "other",
+      "gold_priority": "low",
+      "priority": "low",
+      "gold_signals": [],
+      "signals": [],
+      "review_reasons": [
+        "type_other"
+      ],
+      "valid_output": true,
+      "seconds": 7.46
+    }
+  ]
+}

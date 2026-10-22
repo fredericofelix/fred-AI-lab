@@ -43,6 +43,8 @@ def stage(dest: Path, spike: bool) -> None:
     for f in (ROOT / "space").iterdir():
         if f.is_file() and f.name != "spike_app.py":
             shutil.copy(f, dest / f.name)
+    if (ROOT / "METRICS.md").exists():
+        shutil.copy(ROOT / "METRICS.md", dest / "METRICS.md")
     if (ROOT / "assets").exists():
         shutil.copytree(ROOT / "assets", dest / "assets")
 
