@@ -115,4 +115,5 @@ with gr.Blocks(title="Lex Seed · Triagem Jurídica", analytics_enabled=False) a
 
 if __name__ == "__main__":
     theme = gr.themes.Base(font=gr.themes.GoogleFont("Inter")).set(**views.theme_settings())
+    demo.queue(max_size=10)  # one request at a time on 2 vCPUs; cap the waiting line
     demo.launch(css=views.CSS, theme=theme, head=views.FONTS_HEAD)

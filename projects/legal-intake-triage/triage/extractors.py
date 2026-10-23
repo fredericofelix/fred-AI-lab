@@ -4,7 +4,10 @@ from __future__ import annotations
 
 import os
 import threading
+import time
 from pathlib import Path
+
+from huggingface_hub import hf_hub_download
 
 from triage.extract import extraction_schema
 from triage.rubric import Rubric, load_rubric
@@ -25,12 +28,18 @@ def default_threads(cgroup_cpu_max: Path = CGROUP_CPU_MAX) -> int:
     return os.cpu_count() or 1
 
 
-# key: (Hugging Face repo, GGUF file, system message)
-CANDIDATES: dict[str, tuple[str, str, str | None]] = {
-    "qwen3-4b": ("unsloth/Qwen3-4B-Instruct-2507-GGUF", "Qwen3-4B-Instruct-2507-Q4_K_M.gguf", None),
-    "qwen3-1.7b": ("unsloth/Qwen3-1.7B-GGUF", "Qwen3-1.7B-Q4_K_M.gguf", "/no_think"),
-    "phi-4-mini": ("unsloth/Phi-4-mini-instruct-GGUF", "Phi-4-mini-instruct-Q4_K_M.gguf", None),
-    "gemma-3-4b": ("unsloth/gemma-3-4b-it-GGUF", "gemma-3-4b-it-Q4_K_M.gguf", None),
+# key: (Hugging Face repo, GGUF file, system message, pinned revision or None)
+# The default model is pinned, so an upstream change cannot swap the file under the Space.
+CANDIDATES: dict[str, tuple[str, str, str | None, str | None]] = {
+    "qwen3-4b": (
+        "unsloth/Qwen3-4B-Instruct-2507-GGUF",
+        "Qwen3-4B-Instruct-2507-Q4_K_M.gguf",
+        None,
+        "a06e946bb6b655725eafa393f4a9745d460374c9",
+    ),
+    "qwen3-1.7b": ("unsloth/Qwen3-1.7B-GGUF", "Qwen3-1.7B-Q4_K_M.gguf", "/no_think", None),
+    "phi-4-mini": ("unsloth/Phi-4-mini-instruct-GGUF", "Phi-4-mini-instruct-Q4_K_M.gguf", None, None),
+    "gemma-3-4b": ("unsloth/gemma-3-4b-it-GGUF", "gemma-3-4b-it-Q4_K_M.gguf", None, None),
 }
 DEFAULT_MODEL = "qwen3-4b"  # chosen by the spike, see SPIKE.md
 
@@ -44,14 +53,18 @@ class LlamaCppExtractor:
         filename: str,
         name: str,
         system: str | None = None,
+        revision: str | None = None,
         rubric: Rubric | None = None,
         n_ctx: int = 4096,
         max_tokens: int = 512,
+        timeout_s: float = 90.0,
     ):
         self.name = name
         self._repo_id, self._filename, self._system = repo_id, filename, system
+        self._revision = revision
         self._schema = extraction_schema(rubric or load_rubric())
         self._n_ctx, self._max_tokens = n_ctx, max_tokens
+        self._timeout_s = timeout_s
         self._llm = None
         # One llama.cpp instance is not thread-safe: load once, run one request at a time.
         self._lock = threading.Lock()
@@ -64,9 +77,8 @@ class LlamaCppExtractor:
         from llama_cpp import Llama  # heavy import, only when a model actually runs
 
         threads = default_threads()
-        self._llm = Llama.from_pretrained(
-            self._repo_id, self._filename, n_ctx=self._n_ctx, n_threads=threads, n_threads_batch=threads, verbose=False
-        )
+        path = hf_hub_download(self._repo_id, self._filename, revision=self._revision)
+        self._llm = Llama(model_path=path, n_ctx=self._n_ctx, n_threads=threads, n_threads_batch=threads, verbose=False)
 
     def __call__(self, prompt: str) -> str:
         with self._lock:
@@ -78,17 +90,25 @@ class LlamaCppExtractor:
         messages = [{"role": "user", "content": prompt}]
         if self._system:
             messages.insert(0, {"role": "system", "content": self._system})
-        out = self._llm.create_chat_completion(
+        deadline = time.monotonic() + self._timeout_s
+        stream = self._llm.create_chat_completion(
             messages=messages,
             response_format={"type": "json_object", "schema": self._schema},
             temperature=0,
             max_tokens=self._max_tokens,
+            stream=True,  # token by token, so a slow request can be cut at the deadline
         )
-        return out["choices"][0]["message"]["content"]
+        parts = []
+        for chunk in stream:
+            parts.append(chunk["choices"][0]["delta"].get("content") or "")
+            if time.monotonic() > deadline:
+                stream.close()  # stops generation and frees the model for the next visitor
+                raise TimeoutError(f"no answer within {self._timeout_s:.0f} s")
+        return "".join(parts)
 
 
 def get_extractor(name: str) -> LlamaCppExtractor:
     if name not in CANDIDATES:
         raise KeyError(f"unknown model {name!r}; known: {', '.join(CANDIDATES)}")
-    repo_id, filename, system = CANDIDATES[name]
-    return LlamaCppExtractor(repo_id, filename, name=name, system=system)
+    repo_id, filename, system, revision = CANDIDATES[name]
+    return LlamaCppExtractor(repo_id, filename, name=name, system=system, revision=revision)

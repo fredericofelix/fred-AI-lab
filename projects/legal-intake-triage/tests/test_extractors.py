@@ -46,7 +46,7 @@ def test_concurrent_calls_load_once_and_never_overlap(monkeypatch):
                 overlaps.append(True)
             time.sleep(0.05)
             active[0] -= 1
-            return {"choices": [{"message": {"content": "{}"}}]}
+            yield {"choices": [{"delta": {"content": "{}"}}]}
 
     def fake_load():
         loads.append(1)
@@ -77,3 +77,65 @@ def test_loaded_flag_follows_model_state():
     assert ex.loaded is False
     ex._llm = object()
     assert ex.loaded is True
+
+
+def test_generation_stops_at_the_time_limit(monkeypatch):
+    import time
+
+    ex = get_extractor(DEFAULT_MODEL)
+    ex._timeout_s = 0.2
+
+    class SlowLlama:
+        def create_chat_completion(self, **kwargs):
+            assert kwargs["stream"] is True
+            for _ in range(100):
+                time.sleep(0.05)
+                yield {"choices": [{"delta": {"content": "x"}}]}
+
+    ex._llm = SlowLlama()
+    start = time.perf_counter()
+    with pytest.raises(TimeoutError):
+        ex("p")
+    assert time.perf_counter() - start < 1.0
+
+
+def test_streamed_chunks_are_joined():
+    ex = get_extractor(DEFAULT_MODEL)
+
+    class FastLlama:
+        def create_chat_completion(self, **_):
+            yield {"choices": [{"delta": {"role": "assistant"}}]}
+            yield {"choices": [{"delta": {"content": '{"a"'}}]}
+            yield {"choices": [{"delta": {"content": ": 1}"}}]}
+
+    ex._llm = FastLlama()
+    assert ex("p") == '{"a": 1}'
+
+
+def test_default_model_download_is_pinned_to_a_revision(monkeypatch):
+    import sys
+    import types
+
+    import triage.extractors as mod
+
+    calls = {}
+
+    def fake_download(repo_id, filename, revision=None):
+        calls.update(repo_id=repo_id, filename=filename, revision=revision)
+        return "/tmp/model.gguf"
+
+    fake_llama = types.ModuleType("llama_cpp")
+    fake_llama.Llama = lambda model_path, **kw: calls.update(model_path=model_path) or object()
+    monkeypatch.setitem(sys.modules, "llama_cpp", fake_llama)
+    monkeypatch.setattr(mod, "hf_hub_download", fake_download)
+    ex = get_extractor(DEFAULT_MODEL)
+    ex._load()
+    assert calls["revision"] == "a06e946bb6b655725eafa393f4a9745d460374c9"
+    assert calls["model_path"] == "/tmp/model.gguf"
+
+
+def test_space_requirements_are_pinned():
+    from pathlib import Path
+
+    reqs = (Path(__file__).resolve().parent.parent / "requirements-space.txt").read_text()
+    assert "llama-cpp-python==0.3.36" in reqs

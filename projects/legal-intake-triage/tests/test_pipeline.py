@@ -58,7 +58,7 @@ def test_two_invalid_outputs_fall_back(rubric):
 
 
 def test_extractor_errors_never_escape(rubric):
-    run = run_triage(TEXT, rubric, FakeExtractor([RuntimeError("boom"), TimeoutError("slow")]))
+    run = run_triage(TEXT, rubric, FakeExtractor([RuntimeError("boom"), OSError("gone")]))
     assert run.extraction is None and run.decision.review_reasons == ("invalid_output",)
 
 
@@ -114,3 +114,10 @@ def test_floor_applies_even_when_model_output_is_invalid(rubric):
 def test_ordinary_request_has_no_injection_reason(rubric):
     run = run_triage(TEXT, rubric, FakeExtractor([VALID]))
     assert "suspected_injection" not in run.decision.review_reasons
+
+
+def test_timeout_goes_to_human_without_retry(rubric):
+    fake = FakeExtractor([TimeoutError("slow"), VALID])
+    run = run_triage(TEXT, rubric, fake)
+    assert run.attempts == 1 and len(fake.prompts) == 1
+    assert run.decision.review_reasons[0] == "timeout"

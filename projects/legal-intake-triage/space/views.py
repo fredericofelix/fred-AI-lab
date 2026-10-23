@@ -22,7 +22,8 @@ DETECTOR_SPACE = "https://huggingface.co/spaces/fred-ai-lab/detector-lgpd"
 DETECTOR_REPO = "https://github.com/fredericofelix/privacyseed-lgpd"
 
 NOTICE = (
-    "⚠️ **Não cole dados reais** de clientes, colaboradores ou processos. Antes da triagem, o Detector LGPD "
+    "⚠️ **Não cole dados reais** de clientes, colaboradores ou processos, nem dados sensíveis (saúde, sindicato, "
+    "religião e outros). Antes da triagem, o Detector LGPD "
     "da Privacy Seed mascara CPF, CNPJ, PIS, CNH, título de eleitor, cartão, e-mail, telefone, CEP e data de "
     "nascimento. **Nomes e endereços não são mascarados nesta versão.** O texto é processado só em memória, "
     "no Hugging Face, e não é guardado."

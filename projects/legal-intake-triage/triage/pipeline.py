@@ -61,11 +61,15 @@ def triage(text: str, rubric: Rubric, extractor: Extractor) -> Iterator[StageEve
     extraction: Extraction | None = None
     prompt = build_prompt(sanitized.text, rubric)
     attempts = 0
+    timed_out = False
     while attempts < MAX_ATTEMPTS and extraction is None:
         attempts += 1
         try:
             raw = extractor(prompt)
-        except Exception:  # a crashed or slow model is an invalid attempt, never a stack trace
+        except TimeoutError:
+            timed_out = True  # do not retry: a second slow attempt would double the wait
+            break
+        except Exception:  # a crashed model is an invalid attempt, never a stack trace
             raw, problems = "", ["model error"]
         else:
             try:
@@ -85,7 +89,9 @@ def triage(text: str, rubric: Rubric, extractor: Extractor) -> Iterator[StageEve
         extraction, added = apply_floor(extraction, sanitized.text, rubric)
         decision = decide(extraction, rubric)
     else:
-        notes.append("saída inválida: vai para revisão humana")
+        notes.append(
+            "tempo esgotado: vai para revisão humana" if timed_out else "saída inválida: vai para revisão humana"
+        )
         empty = Extraction("other", "", None, (), "low", ())
         floored, added = apply_floor(empty, sanitized.text, rubric)
         decision = fallback(rubric)
@@ -93,6 +99,10 @@ def triage(text: str, rubric: Rubric, extractor: Extractor) -> Iterator[StageEve
             raised = decide(floored, rubric)
             design = tuple(r for r in raised.review_reasons if r in DESIGN_REASONS)
             decision = dataclasses.replace(raised, review_reasons=("invalid_output", *design))
+        if timed_out:
+            decision = dataclasses.replace(
+                decision, review_reasons=("timeout", *[r for r in decision.review_reasons if r != "invalid_output"])
+            )
     if added:
         notes.append("sinal adicionado pela regra fixa: " + ", ".join(added))
     if injection_markers(sanitized.text):

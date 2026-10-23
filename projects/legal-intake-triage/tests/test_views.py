@@ -36,7 +36,8 @@ def showcase(rubric):
 
 def test_copy_is_exact():
     assert views.NOTICE == (
-        "⚠️ **Não cole dados reais** de clientes, colaboradores ou processos. Antes da triagem, o Detector LGPD "
+        "⚠️ **Não cole dados reais** de clientes, colaboradores ou processos, nem dados sensíveis (saúde, sindicato, "
+        "religião e outros). Antes da triagem, o Detector LGPD "
         "da Privacy Seed mascara CPF, CNPJ, PIS, CNH, título de eleitor, cartão, e-mail, telefone, CEP e data de "
         "nascimento. **Nomes e endereços não são mascarados nesta versão.** O texto é processado só em memória, "
         "no Hugging Face, e não é guardado."
@@ -170,3 +171,7 @@ def test_theme_settings_are_valid_gradio_variables():
 def test_injection_reason_has_portuguese_label():
     assert views.REASON_PT["suspected_injection"] == "possível tentativa de manipulação do texto"
     assert views.REASON_PT["timeout"] == "tempo esgotado"
+
+
+def test_notice_warns_about_sensitive_data():
+    assert "dados sensíveis (saúde, sindicato" in views.NOTICE
