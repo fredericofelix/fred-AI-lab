@@ -175,3 +175,31 @@ def test_injection_reason_has_portuguese_label():
 
 def test_notice_warns_about_sensitive_data():
     assert "dados sensíveis (saúde, sindicato" in views.NOTICE
+
+
+def test_timeout_without_exception_rule_shows_no_made_up_triage(rubric):
+    import dataclasses
+
+    d = dataclasses.replace(fallback(rubric), review_reasons=("timeout",))
+    html = views.result_html(d, rubric)
+    assert "Sem triagem automática" in html and "10 dias úteis" not in html
+    assert "tempo esgotado" in html
+
+
+def test_floor_result_is_shown_even_when_model_output_was_invalid(rubric):
+    import dataclasses
+
+    d = decide(Extraction("other", "", None, (SignalHit("SIG-HARD-DEADLINE", "intimação"),), "low", ()), rubric)
+    d = dataclasses.replace(d, review_reasons=("invalid_output", "override"))
+    html = views.result_html(d, rubric)
+    assert "Crítica · mesmo dia" in html and "Sem triagem automática" not in html
+
+
+def test_timing_line_never_contains_the_text(rubric):
+    from triage.extract import FakeExtractor
+    from triage.pipeline import run_triage
+
+    secret = "Contrato sigiloso com a Empresa Fictícia"
+    run = run_triage(secret, rubric, FakeExtractor(["x", "x"]))
+    line = views.timing_line(run)
+    assert line.startswith("triage seconds=") and "Fictícia" not in line and "Contrato" not in line

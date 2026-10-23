@@ -66,6 +66,8 @@ class LlamaCppExtractor:
         self._n_ctx, self._max_tokens = n_ctx, max_tokens
         self._timeout_s = timeout_s
         self._llm = None
+        self._ready = False
+        self._busy_since: float | None = None  # monotonic time the model was taken, for the watchdog
         # One llama.cpp instance is not thread-safe: load once, run one request at a time.
         self._lock = threading.Lock()
 
@@ -73,23 +75,67 @@ class LlamaCppExtractor:
     def loaded(self) -> bool:
         return self._llm is not None
 
+    @property
+    def ready(self) -> bool:
+        """Weights loaded and the rubric prefix primed: the next request skips the slow part."""
+        return self._ready
+
     def _load(self):
         from llama_cpp import Llama  # heavy import, only when a model actually runs
 
         threads = default_threads()
         path = hf_hub_download(self._repo_id, self._filename, revision=self._revision)
-        self._llm = Llama(model_path=path, n_ctx=self._n_ctx, n_threads=threads, n_threads_batch=threads, verbose=False)
+        # use_mmap=False keeps the weights in RAM: after a long idle the host can drop mmap'd pages,
+        # and re-reading 2.5 GB on the first request was the suspect of the 2026-10-23 hang.
+        self._llm = Llama(
+            model_path=path,
+            n_ctx=self._n_ctx,
+            n_threads=threads,
+            n_threads_batch=threads,
+            use_mmap=False,
+            verbose=False,
+        )
 
     def __call__(self, prompt: str) -> str:
-        with self._lock:
+        # Waiting for the model counts against the time limit, so a stuck call cannot queue visitors forever.
+        if not self._lock.acquire(timeout=self._timeout_s):
+            raise TimeoutError(f"model busy for more than {self._timeout_s:.0f} s")
+        self._busy_since = time.monotonic()
+        try:
             if self._llm is None:
                 self._load()
             return self._complete(prompt)
+        finally:
+            self._busy_since = None
+            self._lock.release()
 
-    def _complete(self, prompt: str) -> str:
+    def warm_up(self, prefix_prompt: str) -> None:
+        """Load the weights and prime llama.cpp's prefix cache with the rubric, generating one token."""
+        with self._lock:
+            self._busy_since = time.monotonic()
+            try:
+                if self._llm is None:
+                    self._load()
+                self._llm.create_chat_completion(messages=self._messages(prefix_prompt), max_tokens=1, temperature=0)
+                self._ready = True
+            finally:
+                self._busy_since = None
+
+    def check_watchdog(self, limit_s: float) -> None:
+        """Exit the process if one call holds the model too long; Hugging Face restarts the Space."""
+        since = self._busy_since
+        if since is not None and time.monotonic() - since > limit_s:
+            print(f"watchdog: model busy for more than {limit_s:.0f} s, restarting", flush=True)
+            os._exit(1)
+
+    def _messages(self, prompt: str) -> list[dict]:
         messages = [{"role": "user", "content": prompt}]
         if self._system:
             messages.insert(0, {"role": "system", "content": self._system})
+        return messages
+
+    def _complete(self, prompt: str) -> str:
+        messages = self._messages(prompt)
         deadline = time.monotonic() + self._timeout_s
         stream = self._llm.create_chat_completion(
             messages=messages,

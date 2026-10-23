@@ -121,3 +121,14 @@ def test_timeout_goes_to_human_without_retry(rubric):
     run = run_triage(TEXT, rubric, fake)
     assert run.attempts == 1 and len(fake.prompts) == 1
     assert run.decision.review_reasons[0] == "timeout"
+
+
+def test_retry_is_skipped_when_the_time_budget_is_spent(rubric, monkeypatch):
+    import triage.pipeline as mod
+
+    clock = iter([0.0])
+    monkeypatch.setattr(mod.time, "perf_counter", lambda: next(clock, 200.0))
+    fake = FakeExtractor(["nada", VALID])
+    run = run_triage(TEXT, rubric, fake)
+    assert len(fake.prompts) == 1
+    assert run.decision.review_reasons[0] == "timeout"

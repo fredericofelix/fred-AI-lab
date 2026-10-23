@@ -53,9 +53,13 @@ def check_values(extraction: Extraction, rubric: Rubric) -> tuple[Extraction, li
 
 # Safety floor for the two override signals: plain keywords that can only raise the result.
 # A model can be talked out of a signal; these words cannot.
+_ACTS = r"(?:ão|ões|ao|oes)"
 _FLOOR = {
     "SIG-HARD-DEADLINE": re.compile(
-        r"cita[çc][ãa]o|intima[çc][ãa]o|notifica[çc][ãa]o extrajudicial|carta do (?:f[óo]rum|tribunal)", re.I
+        rf"cita[çc]{_ACTS}|intima[çc]{_ACTS}|notifica[çc]{_ACTS} extrajudicia(?:l|is)"
+        r"|carta do (?:f[óo]rum|tribunal)"
+        r"|(?:fomos|foi|foram|fui) (?:citad|intimad)[oa]s?",
+        re.I,
     ),
     "SIG-INCIDENT": re.compile(r"vazamento|acesso indevido|vazaram|vazou", re.I),
 }
@@ -65,7 +69,7 @@ _INJECTION = re.compile(
     r"|desconsider\w*\s+(?:\w+\s+){0,3}(?:instru[çc][õo]es|regras)"
     r"|instru[çc][ãa]o (?:ao|para o) (?:modelo|sistema|assistente)"
     r"|</?\s*demanda\s*>"
-    r"|\bSISTEMA\s*:",
+    r"|(?-i:\bSISTEMA\s*:)",  # an all-caps fake system turn, not the ordinary word "Sistema:"
     re.I,
 )
 

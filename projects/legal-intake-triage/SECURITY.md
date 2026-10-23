@@ -10,7 +10,7 @@ This demo is public, anonymous and accepts free text, so it was threat-modeled b
 | Prompt injection inflates priority | Every quoted span must appear verbatim in the request, and spans that quote a rule id (`SIG-…`) are rejected. A value signal must quote an amount above the rubric threshold. |
 | Personal data | The [Privacy Seed detector](https://github.com/fredericofelix/privacyseed-lgpd) masks identifiers before the model reads the text. The app logs and stores nothing; analytics, flagging and the public API are off. Names, addresses and sensitive data are **not** masked: the notice asks visitors not to paste them. |
 | Malicious output in the page | Visitor text and model spans are HTML-escaped; the model's output is parsed as JSON and never executed. |
-| Slow or abusive use | Input capped at 3,000 characters, 512 output tokens, one request at a time, a queue of 10, and a 90 s limit per request (after which the request goes to human review). |
+| Slow or abusive use | Input capped at 3,000 characters, 512 output tokens, one request at a time, a queue of 10. Waiting for the model and each generation attempt are cut at 90 s, and no retry starts after 60 s, so a request ends within about 150 s and goes to human review if it runs out of time. Model weights stay in RAM. A watchdog restarts the Space if one call holds the model for more than 5 minutes (a stall inside native code cannot be interrupted otherwise). Logs record stage timings only, never the text. |
 | Supply chain | Model file pinned to a revision; `llama-cpp-python`, `privacyseed-lgpd` and Gradio pinned to exact versions. |
 
 ## Prompt-injection test

@@ -5,11 +5,13 @@ import os
 os.environ.setdefault("GRADIO_ANALYTICS_ENABLED", "False")
 
 import threading  # noqa: E402
+import time  # noqa: E402
 from pathlib import Path  # noqa: E402
 
 import gradio as gr  # noqa: E402
 import views  # noqa: E402
 
+from triage.extract import build_prompt  # noqa: E402
 from triage.extractors import DEFAULT_MODEL, get_extractor  # noqa: E402
 from triage.pipeline import MAX_CHARS, StageEvent, TriageRun, triage  # noqa: E402
 from triage.rubric import DEFAULT_RUBRIC, load_rubric  # noqa: E402
@@ -23,8 +25,18 @@ TYPES_TABLE, SIGNALS_TABLE = views.rubric_tables(RUBRIC)
 HOW_IT_WORKS = (HERE / "how_it_works.md").read_text(encoding="utf-8")
 METRICS = HERE / "METRICS.md"
 
-# Load the model in the background so the page and the examples work at once.
-threading.Thread(target=EXTRACTOR, args=("Aquecimento do modelo.",), daemon=True).start()
+# Load the model and prime the rubric prefix in the background, so the page and the examples work at once.
+PREFIX = build_prompt("", RUBRIC).rsplit("<demanda>", 1)[0]
+threading.Thread(target=EXTRACTOR.warm_up, args=(PREFIX,), daemon=True).start()
+
+
+def _watchdog():
+    while True:
+        time.sleep(15)
+        EXTRACTOR.check_watchdog(limit_s=300)  # longer than download + load + one request
+
+
+threading.Thread(target=_watchdog, daemon=True).start()
 
 
 def _render(run: TriageRun, events: list[StageEvent]):
@@ -50,8 +62,9 @@ def run(text: str):
             if item.stage == "sanitize" and item.done:
                 # Show Step 1 while the model reads; regex sanitizing twice costs milliseconds.
                 step1 = views.sanitize_html(sanitize(text[:MAX_CHARS]))
-            yield views.steps_html(events, running=True, model_loaded=EXTRACTOR.loaded), step1, "", [], ""
+            yield views.steps_html(events, running=True, model_loaded=EXTRACTOR.ready), step1, "", [], ""
         else:
+            print(views.timing_line(item), flush=True)  # stages and seconds only, never the text
             yield _render(item, events)
 
 

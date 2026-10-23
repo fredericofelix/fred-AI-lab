@@ -178,7 +178,8 @@ def result_html(d: Decision, rubric: Rubric) -> str:
         review = f"👤 <b>Revisão humana: sim</b> ({reasons})"
     else:
         review = "👤 Revisão humana: não necessária pela rubrica"
-    if "invalid_output" in d.review_reasons:
+    no_model_result = {"invalid_output", "timeout"} & set(d.review_reasons)
+    if no_model_result and "override" not in d.review_reasons:
         cards = ["<div><b>Resultado</b><br>Sem triagem automática</div>"]
     return (
         '<div class="triage-card"><b>Passo 2 · Triagem — Lex Seed</b>'
@@ -260,3 +261,11 @@ def theme_settings() -> dict[str, str]:
     }
     no_dark_variant = {"color_accent", "color_accent_soft"}
     return {**base, **{f"{k}_dark": v for k, v in base.items() if k not in no_dark_variant}}
+
+
+def timing_line(run: TriageRun) -> str:
+    """One privacy-safe log line per request: stages and seconds, never the text."""
+    reasons = ",".join(run.decision.review_reasons) or "-"
+    return (
+        f"triage seconds={run.seconds:.1f} attempts={run.attempts} priority={run.decision.priority} reasons={reasons}"
+    )

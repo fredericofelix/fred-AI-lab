@@ -18,6 +18,7 @@ from triage.validate import ExtractionInvalid, parse_extraction
 
 MAX_CHARS = 3000
 MAX_ATTEMPTS = 2
+RETRY_CUTOFF_S = 60.0  # no second attempt after this, so one request stays within ~150 s
 
 Stage = Literal["sanitize", "extract", "check", "decide"]
 
@@ -77,6 +78,9 @@ def triage(text: str, rubric: Rubric, extractor: Extractor) -> Iterator[StageEve
                 break
             except ExtractionInvalid as e:
                 problems = e.problems
+        if attempts < MAX_ATTEMPTS and time.perf_counter() - start > RETRY_CUTOFF_S:
+            timed_out = True
+            break
         prompt = build_retry_prompt(sanitized.text, rubric, raw, problems)
     yield StageEvent("extract", True, f"{attempts} tentativa(s)")
 

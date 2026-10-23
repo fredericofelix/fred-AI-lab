@@ -139,3 +139,65 @@ def test_space_requirements_are_pinned():
 
     reqs = (Path(__file__).resolve().parent.parent / "requirements-space.txt").read_text()
     assert "llama-cpp-python==0.3.36" in reqs
+
+
+def test_waiting_for_the_lock_counts_against_the_time_limit():
+    import time
+
+    ex = get_extractor(DEFAULT_MODEL)
+    ex._timeout_s = 0.2
+    ex._lock.acquire()  # a stuck warm-up or request holds the model
+    try:
+        start = time.perf_counter()
+        with pytest.raises(TimeoutError):
+            ex("p")
+        assert time.perf_counter() - start < 1.0
+    finally:
+        ex._lock.release()
+
+
+def test_model_weights_are_kept_in_ram(monkeypatch):
+    import sys
+    import types
+
+    import triage.extractors as mod
+
+    kwargs = {}
+    fake_llama = types.ModuleType("llama_cpp")
+    fake_llama.Llama = lambda **kw: kwargs.update(kw) or object()
+    monkeypatch.setitem(sys.modules, "llama_cpp", fake_llama)
+    monkeypatch.setattr(mod, "hf_hub_download", lambda *a, **k: "/tmp/m.gguf")
+    get_extractor(DEFAULT_MODEL)._load()
+    assert kwargs["use_mmap"] is False  # idle hosts evict mmap'd pages; reload on first request was the hang suspect
+
+
+def test_warm_up_loads_and_primes_prefix_with_one_token():
+    ex = get_extractor(DEFAULT_MODEL)
+    seen = {}
+
+    class FakeLlama:
+        def create_chat_completion(self, **kw):
+            seen.update(kw)
+            return {"choices": [{"message": {"content": ""}}]}
+
+    ex._load = lambda: setattr(ex, "_llm", FakeLlama())
+    ex.warm_up("prefixo da rubrica")
+    assert seen["max_tokens"] == 1 and "response_format" not in seen
+    assert seen["messages"][-1]["content"] == "prefixo da rubrica"
+    assert ex.ready
+
+
+def test_watchdog_exits_when_a_call_runs_too_long(monkeypatch):
+    import time
+
+    import triage.extractors as mod
+
+    exits = []
+    monkeypatch.setattr(mod.os, "_exit", lambda code: exits.append(code))
+    ex = get_extractor(DEFAULT_MODEL)
+    ex._busy_since = time.monotonic() - 1000
+    ex.check_watchdog(limit_s=300)
+    assert exits == [1]
+    ex._busy_since = None
+    ex.check_watchdog(limit_s=300)
+    assert exits == [1]
