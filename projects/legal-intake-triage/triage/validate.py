@@ -37,6 +37,8 @@ def _check_span(span, where: str, text: str, problems: list[str]) -> str:
     if not isinstance(span, str) or not span.strip():
         problems.append(f"{where}: empty span")
         return ""
+    if re.search(r"\bSIG-[A-Z-]+\b", span):
+        problems.append(f"{where}: span quotes a rule id, not the request: {span!r}")
     if not span_in_text(span, text):
         problems.append(f"{where}: span not found verbatim in the request: {span!r}")
     return span

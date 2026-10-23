@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import dataclasses
 import time
 from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Literal
 
-from triage.checks import check_values
-from triage.decide import Decision, decide, fallback
+from triage.checks import apply_floor, check_values, injection_markers
+from triage.decide import DESIGN_REASONS, Decision, decide, fallback
 from triage.extract import Extractor, build_prompt, build_retry_prompt
 from triage.extraction import Extraction
 from triage.rubric import Rubric
@@ -76,20 +77,30 @@ def triage(text: str, rubric: Rubric, extractor: Extractor) -> Iterator[StageEve
     yield StageEvent("extract", True, f"{attempts} tentativa(s)")
 
     yield StageEvent("check", False, "")
-    ok = extraction is not None
-    dropped: list[str] = []
-    if ok:
+    notes: list[str] = []
+    if extraction is not None:
         extraction, dropped = check_values(extraction, rubric)
-    if not ok:
-        check_detail = "saída inválida: vai para revisão humana"
-    elif dropped:
-        check_detail = "sinal descartado: " + "; ".join(dropped)
+        if dropped:
+            notes.append("sinal descartado: " + "; ".join(dropped))
+        extraction, added = apply_floor(extraction, sanitized.text, rubric)
+        decision = decide(extraction, rubric)
     else:
-        check_detail = "regras e trechos conferidos"
-    yield StageEvent("check", True, check_detail)
+        notes.append("saída inválida: vai para revisão humana")
+        empty = Extraction("other", "", None, (), "low", ())
+        floored, added = apply_floor(empty, sanitized.text, rubric)
+        decision = fallback(rubric)
+        if added:
+            raised = decide(floored, rubric)
+            design = tuple(r for r in raised.review_reasons if r in DESIGN_REASONS)
+            decision = dataclasses.replace(raised, review_reasons=("invalid_output", *design))
+    if added:
+        notes.append("sinal adicionado pela regra fixa: " + ", ".join(added))
+    if injection_markers(sanitized.text):
+        notes.append("possível tentativa de manipulação do texto: vai para revisão humana")
+        decision = dataclasses.replace(decision, review_reasons=(*decision.review_reasons, "suspected_injection"))
+    yield StageEvent("check", True, "; ".join(notes) or "regras e trechos conferidos")
 
     yield StageEvent("decide", False, "")
-    decision = decide(extraction, rubric) if ok else fallback(rubric)
     yield StageEvent("decide", True, "")
 
     yield TriageRun(

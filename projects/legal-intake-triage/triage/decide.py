@@ -9,7 +9,15 @@ from triage.extraction import Extraction
 from triage.rubric import LEVELS, Level, Priority, Rubric
 
 ReviewReason = Literal[
-    "high_risk", "override", "invalid_output", "low_confidence", "missing_info", "type_other", "two_types"
+    "high_risk",
+    "override",
+    "invalid_output",
+    "timeout",
+    "suspected_injection",
+    "low_confidence",
+    "missing_info",
+    "type_other",
+    "two_types",
 ]
 DESIGN_REASONS = frozenset({"high_risk", "override"})
 

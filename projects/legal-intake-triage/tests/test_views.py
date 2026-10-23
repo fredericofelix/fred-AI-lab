@@ -165,3 +165,8 @@ def test_theme_settings_are_valid_gradio_variables():
     gr = pytest.importorskip("gradio")
     known = set(inspect.signature(gr.themes.Base.set).parameters)
     assert set(views.theme_settings()) <= known
+
+
+def test_injection_reason_has_portuguese_label():
+    assert views.REASON_PT["suspected_injection"] == "possível tentativa de manipulação do texto"
+    assert views.REASON_PT["timeout"] == "tempo esgotado"

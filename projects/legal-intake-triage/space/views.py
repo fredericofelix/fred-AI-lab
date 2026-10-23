@@ -68,6 +68,8 @@ REASON_PT = {
     "high_risk": "risco alto",
     "override": "regra de exceção",
     "invalid_output": "saída do modelo inválida",
+    "timeout": "tempo esgotado",
+    "suspected_injection": "possível tentativa de manipulação do texto",
     "low_confidence": "baixa confiança",
     "missing_info": "falta informação",
     "type_other": "tipo não identificado",

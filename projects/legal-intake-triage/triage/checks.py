@@ -5,7 +5,7 @@ from __future__ import annotations
 import dataclasses
 import re
 
-from triage.extraction import Extraction
+from triage.extraction import Extraction, SignalHit
 from triage.rubric import Rubric
 
 # "R$ 240 mil", "80 mil", "R$ 18.000,00", "R$ 1,2 milhão", "2 milhões"
@@ -49,3 +49,45 @@ def check_values(extraction: Extraction, rubric: Rubric) -> tuple[Extraction, li
     if not dropped:
         return extraction, []
     return dataclasses.replace(extraction, signals=tuple(kept)), dropped
+
+
+# Safety floor for the two override signals: plain keywords that can only raise the result.
+# A model can be talked out of a signal; these words cannot.
+_FLOOR = {
+    "SIG-HARD-DEADLINE": re.compile(
+        r"cita[çc][ãa]o|intima[çc][ãa]o|notifica[çc][ãa]o extrajudicial|carta do (?:f[óo]rum|tribunal)", re.I
+    ),
+    "SIG-INCIDENT": re.compile(r"vazamento|acesso indevido|vazaram|vazou", re.I),
+}
+
+_INJECTION = re.compile(
+    r"ignor[ea]\w*\s+(?:\w+\s+){0,3}instru[çc][õo]es"
+    r"|desconsider\w*\s+(?:\w+\s+){0,3}(?:instru[çc][õo]es|regras)"
+    r"|instru[çc][ãa]o (?:ao|para o) (?:modelo|sistema|assistente)"
+    r"|</?\s*demanda\s*>"
+    r"|\bSISTEMA\s*:",
+    re.I,
+)
+
+
+def override_floor(text: str) -> list[SignalHit]:
+    hits = []
+    for signal_id, pattern in _FLOOR.items():
+        m = pattern.search(text)
+        if m:
+            hits.append(SignalHit(signal_id, m.group(0)))
+    return hits
+
+
+def apply_floor(extraction: Extraction, text: str, rubric: Rubric) -> tuple[Extraction, list[str]]:
+    """Add override signals the keywords show but the model left out. Never removes anything."""
+    present = {h.id for h in extraction.signals}
+    missing = [h for h in override_floor(text) if h.id not in present and h.id in rubric.signals]
+    if not missing:
+        return extraction, []
+    signals = (*extraction.signals, *missing)
+    return dataclasses.replace(extraction, signals=signals), [h.id for h in missing]
+
+
+def injection_markers(text: str) -> list[str]:
+    return [m.group(0) for m in _INJECTION.finditer(text)]
