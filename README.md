@@ -11,6 +11,7 @@ auditable criteria, measured evals and guardrails. Brazilian law first
 | Project | Area | Description |
 | --- | --- | --- |
 | [dpa-analyzer](projects/dpa-analyzer/) | Privacy · contract review | AI agent to analyze Data Processing Agreements (DPA) |
+| [legal-intake-triage](projects/legal-intake-triage/) | Legal Ops · intake | Triage of in-house legal requests with an auditable rubric and a small open model ([demo](https://huggingface.co/spaces/fred-ai-lab/triagem-juridica)) |
 
 ## Build in public: "Jurídico AI-native em 60 dias"
 
@@ -22,8 +23,8 @@ copy. Follow along on [LinkedIn](https://www.linkedin.com/in/fredfelix/).
 | Weeks | Module | Status |
 | --- | --- | --- |
 | 1 | Opening: the thesis and the plan | planned |
-| 2–3 | Legal intake triage with an auditable rubric | planned |
-| 4–5 | Personal data detector for PT-BR text ([`privacyseed-lgpd`](https://github.com/fredericofelix/privacyseed-lgpd), own repo by Privacy Seed; [demo](https://huggingface.co/spaces/privacyseed/detector-lgpd)) | released (v0.1.0) |
+| 2–3 | Legal intake triage with an auditable rubric ([`legal-intake-triage`](projects/legal-intake-triage/); [demo](https://huggingface.co/spaces/fred-ai-lab/triagem-juridica)) | released (v0) |
+| 4–5 | Personal data detector for PT-BR text ([`privacyseed-lgpd`](https://github.com/fredericofelix/privacyseed-lgpd), own repo by Privacy Seed; [demo](https://huggingface.co/spaces/fred-ai-lab/detector-lgpd)) | released (v0.1.0) |
 | 6–7 | Professional-secrecy guardrail before the prompt | planned |
 | 8 | NDA playbook reviewer | planned |
 | 9 | Open AI maturity framework for legal teams | planned |
