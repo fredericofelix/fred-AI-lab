@@ -93,3 +93,17 @@ def test_secondary_type_and_missing_info_are_read(rubric):
 def test_span_in_text_collapses_whitespace():
     assert span_in_text("a  b\nc", "x a b c y")
     assert not span_in_text("A b", "a b")
+
+
+@pytest.mark.parametrize(
+    "overrides",
+    [
+        {"type": ["contract"]},
+        {"secondary_type": {"a": 1}},
+        {"signals": [{"id": ["SIG-REGULATOR"], "span": "senão vai no Procon"}]},
+        {"confidence": ["high"]},
+    ],
+)
+def test_non_string_values_are_invalid_not_a_crash(rubric, overrides):
+    with pytest.raises(ExtractionInvalid):
+        parse_extraction(_raw(**overrides), rubric, TEXT)

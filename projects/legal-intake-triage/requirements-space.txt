@@ -1,5 +1,5 @@
---extra-index-url https://abetlen.github.io/llama-cpp-python/whl/cpu
 PyYAML>=6,<7
 privacyseed-lgpd==0.1.0
-llama-cpp-python==0.3.36
+# Prebuilt CPU wheel pinned by URL and hash (matches the digest GitHub publishes for the release asset).
+llama-cpp-python @ https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.36/llama_cpp_python-0.3.36-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl#sha256=c8a3e98093e950d7a770f794842e36f2db82b2933e8762ed7b5ffd435011e8e4
 huggingface_hub>=0.24,<2

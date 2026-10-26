@@ -208,3 +208,22 @@ def test_launched_app_has_no_construction_banner():
     # Fred, 2026-10-26: launched, public, no banner.
     app = (ROOT / "space" / "app.py").read_text(encoding="utf-8")
     assert not hasattr(views, "BANNER") and "Em construção" not in app
+
+
+def test_space_readme_does_not_overstate_api_exposure():
+    readme = (ROOT / "space" / "README.md").read_text(encoding="utf-8")
+    assert "não fica exposta como API" not in readme
+    assert "não é listada na documentação da API nem pode ser chamada pelos clientes Gradio" in readme
+
+
+def test_queue_full_message_is_portuguese():
+    ok = (True, "id", "success")
+    assert views.localize_queue_push(ok) == ok
+    full = (False, "Queue is full. Max size is 10 and size is 10.", "queue_full")
+    assert views.localize_queue_push(full) == (False, views.QUEUE_FULL, "queue_full")
+    assert views.QUEUE_FULL.startswith("Muitas pessoas testando agora")
+
+
+def test_pinned_gradio_still_has_the_queue_push_we_wrap():
+    queueing = pytest.importorskip("gradio.queueing")
+    assert hasattr(queueing.Queue, "push")

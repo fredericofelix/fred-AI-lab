@@ -20,7 +20,7 @@ Demonstração do módulo [`legal-intake-triage`](https://github.com/fredericofe
 
 - **Uso recomendado:** não cole dados reais. Para dados reais, rode o projeto localmente.
 - **Saneamento:** antes da triagem, a biblioteca [`privacyseed-lgpd`](https://github.com/fredericofelix/privacyseed-lgpd) (Privacy Seed) mascara CPF, CNPJ (sinalizado), PIS, CNH, título de eleitor, cartão, e-mail, telefone, CEP e data de nascimento. Nomes e endereços não são mascarados.
-- **O que a demonstração faz:** processa o texto apenas em memória, com um modelo que roda dentro do Space (nenhuma API externa). Não há registro, armazenamento, flagging ou analytics do texto, e a função não fica exposta como API.
+- **O que a demonstração faz:** processa o texto apenas em memória, com um modelo que roda dentro do Space (nenhuma API externa). Não há registro, armazenamento, flagging ou analytics do texto, e a função não é listada na documentação da API nem pode ser chamada pelos clientes Gradio.
 - **Papel de agente:** se a LGPD se aplicar a esta demonstração gratuita (é discutível que haja tratamento com fins econômicos), o responsável pelo Fred AI Lab atua como controlador do tratamento efêmero, por definir sua finalidade e seus meios, e o Hugging Face como operador (LGPD, art. 5º, VI e VII).
 - **Base legal:** legítimo interesse (art. 7º, IX, e art. 10), com minimização garantida pelo aviso, pelo saneamento e pela ausência de persistência.
 - **Transferência internacional:** a infraestrutura do Hugging Face fica fora do Brasil (art. 33). A [política de privacidade do Hugging Face](https://huggingface.co/privacy) informa que seus servidores ficam nos Estados Unidos.
