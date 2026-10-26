@@ -42,7 +42,6 @@ def test_copy_is_exact():
         "nascimento. **Nomes e endereços não são mascarados nesta versão.** O texto é processado só em memória, "
         "no Hugging Face, e não é guardado."
     )
-    assert views.BANNER == "🚧 Em construção: versão de teste."
     assert views.DISCLAIMER == (
         "**Triagem automatizada de demandas jurídicas.** Demonstração com dados sintéticos: um modelo de IA aberto "
         "identifica o tipo e os sinais da demanda, e regras explícitas (a rubrica) definem prioridade e prazo. "
@@ -203,3 +202,9 @@ def test_timing_line_never_contains_the_text(rubric):
     run = run_triage(secret, rubric, FakeExtractor(["x", "x"]))
     line = views.timing_line(run)
     assert line.startswith("triage seconds=") and "Fictícia" not in line and "Contrato" not in line
+
+
+def test_launched_app_has_no_construction_banner():
+    # Fred, 2026-10-26: launched, public, no banner.
+    app = (ROOT / "space" / "app.py").read_text(encoding="utf-8")
+    assert not hasattr(views, "BANNER") and "Em construção" not in app

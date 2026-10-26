@@ -76,7 +76,6 @@ def show_example(index: int):
 
 with gr.Blocks(title="Lex Seed · Triagem Jurídica", analytics_enabled=False) as demo:
     gr.Markdown("# Lex Seed · Triagem Jurídica")
-    gr.Markdown(views.BANNER)
     with gr.Tabs():
         with gr.Tab("Triagem"):
             gr.Markdown("**Exemplos prontos** (resultado na hora, gerado antes pelo mesmo modelo):")

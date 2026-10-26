@@ -28,7 +28,6 @@ NOTICE = (
     "nascimento. **Nomes e endereços não são mascarados nesta versão.** O texto é processado só em memória, "
     "no Hugging Face, e não é guardado."
 )
-BANNER = "🚧 Em construção: versão de teste."
 DISCLAIMER = (
     "**Triagem automatizada de demandas jurídicas.** Demonstração com dados sintéticos: um modelo de IA aberto "
     "identifica o tipo e os sinais da demanda, e regras explícitas (a rubrica) definem prioridade e prazo. "
