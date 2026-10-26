@@ -1,0 +1,120 @@
+[
+  {
+    "id": "T-001",
+    "label": "Reclamação que é pedido de titular",
+    "text": "Oi pessoal do jurídico, chegou no SAC uma reclamação de uma cliente bem brava: diz que continua recebendo nossas mensagens de promoção mesmo depois de cancelar a conta. Ela quer saber quais dados ainda temos dela e pediu pra apagar tudo, senão vai reclamar no Procon. Como respondo?",
+    "extraction": {
+      "type": "data_subject_rights",
+      "type_span": "pediu pra apagar tudo",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-REGULATOR",
+          "span": "vai reclamar no Procon"
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 17.9
+  },
+  {
+    "id": "T-029",
+    "label": "Carta do fórum, \"nada urgente\"",
+    "text": "Oi, aqui é da recepção. Chegou uma carta do fórum para a empresa, deixei na mesa do jurídico. Nada urgente, só para vocês saberem.",
+    "extraction": {
+      "type": "litigation",
+      "type_span": "Chegou uma carta do fórum para a empresa",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-HARD-DEADLINE",
+          "span": "Chegou uma carta do fórum para a empresa"
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 35.5
+  },
+  {
+    "id": "T-002",
+    "label": "Contrato com lançamento na quinta",
+    "text": "Time, o fornecedor da plataforma de pagamentos mandou a minuta do contrato novo, valor de R$ 240 mil por ano. Precisamos assinar antes do lançamento do app, que é na próxima quinta. Conseguem revisar?",
+    "extraction": {
+      "type": "contract",
+      "type_span": "Time, o fornecedor da plataforma de pagamentos mandou a minuta do contrato novo, valor de R$ 240 mil por ano. Precisamos assinar antes do lançamento do app, que é na próxima quinta. Conseguem revisar?",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-VALUE",
+          "span": "valor de R$ 240 mil por ano"
+        },
+        {
+          "id": "SIG-LAUNCH",
+          "span": "antes do lançamento do app, que é na próxima quinta"
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 26.3
+  },
+  {
+    "id": "T-020",
+    "label": "Notebook furtado com base de clientes",
+    "text": "TI aqui. Ontem à noite furtaram o notebook de um vendedor de dentro do carro. Ele tinha a planilha com a base de clientes salva na área de trabalho. Já bloqueamos o acesso dele ao sistema.",
+    "extraction": {
+      "type": "compliance",
+      "type_span": "TI aqui. Ontem à noite furtaram o notebook de um vendedor de dentro do carro. Ele tinha a planilha com a base de clientes salva na área de trabalho. Já bloqueamos o acesso dele ao sistema.",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-INCIDENT",
+          "span": "furtaram o notebook de um vendedor de dentro do carro. Ele tinha a planilha com a base de clientes salva na área de trabalho. Já bloqueamos o acesso dele ao sistema."
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 22.1
+  },
+  {
+    "id": "T-004",
+    "label": "Denúncia de assédio",
+    "text": "Preciso de ajuda: uma colaboradora do time de operações denunciou o gestor por assédio no canal de ética. O RH quer saber os próximos passos.",
+    "extraction": {
+      "type": "labor",
+      "type_span": "uma colaboradora do time de operações denunciou o gestor por assédio no canal de ética. O RH quer saber os próximos passos.",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-LABOR-SENSITIVE",
+          "span": "uma colaboradora do time de operações denunciou o gestor por assédio no canal de ética. O RH quer saber os próximos passos."
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 23.3
+  },
+  {
+    "id": "T-010",
+    "label": "Justa causa (com CPF fictício)",
+    "text": "Precisamos desligar o colaborador Paulo Mendes, CPF 318.447.205-19, por justa causa: ele faltou 40 dias sem justificativa. Qual o procedimento?",
+    "extraction": {
+      "type": "labor",
+      "type_span": "Precisamos desligar o colaborador Paulo Mendes, CPF [CPF], por justa causa: ele faltou 40 dias sem justificativa. Qual o procedimento?",
+      "secondary_type": null,
+      "signals": [
+        {
+          "id": "SIG-LABOR-SENSITIVE",
+          "span": "Precisamos desligar o colaborador Paulo Mendes, CPF [CPF], por justa causa: ele faltou 40 dias sem justificativa."
+        }
+      ],
+      "confidence": "high",
+      "missing_info": []
+    },
+    "seconds": 47.2
+  }
+]
