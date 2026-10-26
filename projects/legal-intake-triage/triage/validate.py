@@ -37,7 +37,7 @@ def _check_span(span, where: str, text: str, problems: list[str]) -> str:
     if not isinstance(span, str) or not span.strip():
         problems.append(f"{where}: empty span")
         return ""
-    if re.search(r"\bSIG-[A-Z-]+\b", span):
+    if re.search(r"\bSIG-[A-Z-]+\b", span, re.I):
         problems.append(f"{where}: span quotes a rule id, not the request: {span!r}")
     if not span_in_text(span, text):
         problems.append(f"{where}: span not found verbatim in the request: {span!r}")
@@ -55,10 +55,10 @@ def parse_extraction(raw: str, rubric: Rubric, text: str) -> Extraction:
             problems.append(f"missing key {key!r}")
 
     type_id = data.get("type")
-    if "type" in data and type_id not in rubric.types:
+    if "type" in data and not (isinstance(type_id, str) and type_id in rubric.types):
         problems.append(f"unknown type {type_id!r}")
     secondary = data.get("secondary_type")
-    if secondary is not None and secondary not in rubric.types:
+    if secondary is not None and not (isinstance(secondary, str) and secondary in rubric.types):
         problems.append(f"unknown secondary_type {secondary!r}")
     type_span = _check_span(data.get("type_span"), "type_span", text, problems) if "type_span" in data else ""
 
@@ -74,7 +74,7 @@ def parse_extraction(raw: str, rubric: Rubric, text: str) -> Extraction:
         signals = []
     for item in signals:
         sid = item.get("id") if isinstance(item, dict) else None
-        if sid not in rubric.signals:
+        if not (isinstance(sid, str) and sid in rubric.signals):
             problems.append(f"unknown signal {sid!r}")
             continue
         span = _check_span(item.get("span"), f"signal {sid}", text, problems)

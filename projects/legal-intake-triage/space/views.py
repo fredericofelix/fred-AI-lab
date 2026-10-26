@@ -45,6 +45,7 @@ LOAD_NOTICE = (
     "As seguintes levam cerca de 30 segundos. Os exemplos prontos respondem na hora."
 )
 LOADING_LABEL = "Carregando o modelo de IA (primeira vez, até ~3 min)"
+QUEUE_FULL = "Muitas pessoas testando agora. Espere um minuto e tente de novo, ou use um dos exemplos prontos."
 
 # Lex Seed brand tokens (lex-seed-site/docs/brand.md).
 BRAND = {
@@ -268,3 +269,9 @@ def timing_line(run: TriageRun) -> str:
     return (
         f"triage seconds={run.seconds:.1f} attempts={run.attempts} priority={run.decision.priority} reasons={reasons}"
     )
+
+
+def localize_queue_push(result: tuple) -> tuple:
+    """Replace Gradio's English 'Queue is full' message; everything else passes through."""
+    ok, message, state = result
+    return (ok, QUEUE_FULL, state) if state == "queue_full" else result

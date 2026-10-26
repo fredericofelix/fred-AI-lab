@@ -134,13 +134,6 @@ def test_default_model_download_is_pinned_to_a_revision(monkeypatch):
     assert calls["model_path"] == "/tmp/model.gguf"
 
 
-def test_space_requirements_are_pinned():
-    from pathlib import Path
-
-    reqs = (Path(__file__).resolve().parent.parent / "requirements-space.txt").read_text()
-    assert "llama-cpp-python==0.3.36" in reqs
-
-
 def test_waiting_for_the_lock_counts_against_the_time_limit():
     import time
 
@@ -201,3 +194,12 @@ def test_watchdog_exits_when_a_call_runs_too_long(monkeypatch):
     ex._busy_since = None
     ex.check_watchdog(limit_s=300)
     assert exits == [1]
+
+
+def test_llama_wheel_is_pinned_by_url_and_hash_without_extra_index():
+    from pathlib import Path
+
+    reqs = (Path(__file__).resolve().parent.parent / "requirements-space.txt").read_text()
+    assert "--extra-index-url" not in reqs  # a third-party index would be consulted for every package
+    assert "llama_cpp_python-0.3.36-py3-none-manylinux2014_x86_64" in reqs
+    assert "#sha256=c8a3e98093e950d7a770f794842e36f2db82b2933e8762ed7b5ffd435011e8e4" in reqs
