@@ -90,3 +90,12 @@ def test_verdict_never_clean_on_timeout():
         out = verdict([], status)
         assert "Não encontramos" not in out
         assert out == VERDICT_FAILSAFE
+
+
+def test_model_flag_overlapping_same_kind_fixed_flag_is_redundant():
+    text = "aceita fechar o acordo por até R$ 350 mil."
+    regex = _at(text, "R$ 350 mil", 3, "amount", "regex")
+    model = _at(text, "por até R$ 350 mil", 3, "amount")
+    merged = merge([regex], [model])
+    assert merged == [regex]
+    assert assign_labels(merged, RUBRIC)[regex] == "[VALOR 1]"

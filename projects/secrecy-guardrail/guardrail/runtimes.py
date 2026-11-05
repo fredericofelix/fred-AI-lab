@@ -54,6 +54,12 @@ class GlinerPass:
         self._labels = labels
         self._threshold = threshold
 
+    def warm_up(self) -> None:
+        from privacyseed_lgpd.recognizers._model import load_model
+
+        if self._model is None:
+            self._model = load_model()
+
     def __call__(self, text: str) -> list[ModelSpan]:
         # privacyseed-lgpd's loader and offset check (private API; safe because the version is pinned)
         from privacyseed_lgpd.recognizers._model import extract, load_model
@@ -113,6 +119,16 @@ class LlamaPass:
             self._busy_since = None
             self._lock.release()
 
+    @property
+    def loaded(self) -> bool:
+        return self._llm is not None
+
+    def warm_up(self) -> None:
+        """Load the weights before the first visitor arrives."""
+        with self._lock:
+            if self._llm is None:
+                self._load()
+
     def check_watchdog(self, limit_s: float) -> None:
         """Exit the process if one call holds the model too long; Hugging Face restarts the Space."""
         since = self._busy_since
@@ -149,6 +165,13 @@ class HybridPass:
         orgs = [s for s in self._gliner(text) if s.group == 1]
         rest = [s for s in self._llm(text) if s.group != 1]
         return orgs + rest
+
+    def warm_up(self) -> None:
+        self._gliner.warm_up()
+        self._llm.warm_up()
+
+    def check_watchdog(self, limit_s: float) -> None:
+        self._llm.check_watchdog(limit_s)
 
 
 CANDIDATES = ("gliner", "qwen3-4b", "hybrid")

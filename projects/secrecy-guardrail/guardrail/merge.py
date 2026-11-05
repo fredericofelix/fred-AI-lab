@@ -23,6 +23,13 @@ def _rank(flag: Flag) -> tuple[bool, bool]:
 
 def merge(deterministic: list[Flag], model: list[Flag]) -> list[Flag]:
     """Every deterministic flag survives unless an identical span holds a higher-ranked one; model flags only add."""
+    fixed = [f for f in deterministic if f.source != "model"]
+    # a model flag that overlaps a fixed flag of the same group and kind says the same thing twice
+    model = [
+        m
+        for m in model
+        if not any(f.group == m.group and f.kind == m.kind and f.start < m.end and m.start < f.end for f in fixed)
+    ]
     best: dict[tuple[int, int], Flag] = {}
     for flag in (*deterministic, *model):
         key = (flag.start, flag.end)
