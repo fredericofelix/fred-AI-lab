@@ -1,7 +1,9 @@
 from guardrail.flags import Flag
 from guardrail.merge import (
     VERDICT_CLEAN,
+    VERDICT_DROPPED,
     VERDICT_FAILSAFE,
+    VERDICT_INJECTION,
     assign_labels,
     merge,
     preview,
@@ -99,3 +101,29 @@ def test_model_flag_overlapping_same_kind_fixed_flag_is_redundant():
     merged = merge([regex], [model])
     assert merged == [regex]
     assert assign_labels(merged, RUBRIC)[regex] == "[VALOR 1]"
+
+
+def test_long_model_secret_containing_a_cue_is_kept():
+    text = "Pelo NDA com a Beta, a fórmula do aditivo XR-7 leva 12% de grafeno."
+    cue = _at(text, "NDA", 5, "third_party", "lexicon")
+    secret = _at(text, "NDA com a Beta, a fórmula do aditivo XR-7 leva 12% de grafeno", 5, "third_party")
+    merged = merge([cue], [secret])
+    assert cue in merged and secret in merged
+    assert "grafeno" not in preview(text, assign_labels(merged, RUBRIC))
+
+
+def test_crossing_labeled_spans_do_not_leak_the_tail():
+    text = "Reunião com a Alfa Silva Ramos ontem."
+    org = _at(text, "Alfa Silva", 1, "org")
+    person = _at(text, "Silva Ramos", 1, "person", "detector")
+    out = preview(text, assign_labels(merge([person], [org]), RUBRIC))
+    assert "Ramos" not in out and "Silva" not in out
+
+
+def test_verdict_never_clean_with_injection_or_dropped_spans():
+    assert verdict([], "ok", injection=True) == VERDICT_INJECTION
+    assert verdict([], "ok", dropped=2) == VERDICT_DROPPED
+    one = [Flag(4, "marking", 0, 1, "x", "lexicon")]
+    assert verdict(one, "ok", injection=True).endswith(VERDICT_INJECTION)
+    for out in (verdict([], "ok", injection=True), verdict([], "ok", dropped=1)):
+        assert "Não encontramos pontos de atenção nos grupos" not in out

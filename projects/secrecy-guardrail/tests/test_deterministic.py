@@ -56,3 +56,11 @@ def test_odd_separators_only_if_valid():
     assert flag.text == "0001234 34 2025 8 13 0024" and flag.note is None
     assert cnj_flags("autos 0001234 56 2025 8 13 0024", RUBRIC) == []
     assert len(cnj_flags(f"Processo {VALID}.", RUBRIC)) == 1  # canonical form still found once
+
+
+def test_re_and_tema_as_words_are_not_precedent_cues():
+    for text in (f"A ré foi citada no processo {VALID}", f"Sobre o tema, o processo {VALID} do cliente"):
+        [flag] = cnj_flags(text, RUBRIC)
+        assert flag.note is None, text
+    [flag] = cnj_flags(f"no RE {VALID}", RUBRIC)
+    assert flag.note == "se for precedente público, pode manter"

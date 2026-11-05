@@ -41,13 +41,20 @@ def _valid(m: re.Match[str]) -> bool:
     return check_digit(number, year, segment, court, origin) == int(digits)
 
 
-def _after_cue(folded: str, start: int, cues: tuple[str, ...], window: int) -> bool:
-    before = folded[max(0, start - window) : start]
-    return any(term_pattern(c).search(before) for c in cues)
+def _after_cue(text: str, start: int, cues: tuple[str, ...], window: int) -> bool:
+    """Cues with a capital letter (RE, REsp, STJ, Tema) match case- and accent-sensitively: "ré" is not "RE"."""
+    before = text[max(0, start - window) : start]
+    folded = fold(before)
+    for cue in cues:
+        if cue != cue.lower():
+            if re.search(r"(?<!\w)" + re.escape(cue) + r"(?!\w)", before):
+                return True
+        elif term_pattern(cue).search(folded):
+            return True
+    return False
 
 
 def cnj_flags(text: str, rubric: Rubric) -> list[Flag]:
-    folded = fold(text)
     flags = []
     seen: set[tuple[int, int]] = set()
     for pattern, loose in ((_CNJ_FORMATTED, False), (_CNJ_LOOSE, True)):
@@ -57,7 +64,7 @@ def cnj_flags(text: str, rubric: Rubric) -> list[Flag]:
                 continue  # loose digits are a case number only when the check digit says so
             seen.add((m.start(), m.end()))
             note = None if valid else NOTE_INVALID
-            if _after_cue(folded, m.start(), rubric.precedent_cues, _PRECEDENT_WINDOW):
+            if _after_cue(text, m.start(), rubric.precedent_cues, _PRECEDENT_WINDOW):
                 note = NOTE_PRECEDENT
             flags.append(Flag(2, "cnj", m.start(), m.end(), m.group(0), "regex", note=note))
     return flags

@@ -107,7 +107,7 @@ def check(
     yield StageEvent("merge", False, "")
     flags = merge(fixed, model_flags)
     labels = assign_labels(flags, rubric)
-    result_verdict = verdict(flags, status)
+    result_verdict = verdict(flags, status, injection=bool(injection), dropped=dropped)
     yield StageEvent("merge", True, _count(len(flags), "ponto de atenção", "pontos de atenção"))
 
     yield GuardrailRun(

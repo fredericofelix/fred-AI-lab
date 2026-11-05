@@ -81,3 +81,9 @@ def test_flag_rows_show_anchor_and_label():
 @pytest.mark.skipif(not SITE_ICON.exists(), reason="lex-seed-site not cloned")
 def test_robot_is_byte_copy():
     assert (ROOT / "assets" / "icon-robot.svg").read_bytes() == SITE_ICON.read_bytes()
+
+
+def test_detector_warnings_shown():
+    run = run_check("texto", RUBRIC, FakeModelPass([[]]), FakeDetector())
+    run = run.__class__(**{**run.__dict__, "warnings": ["Nomes não detectados: instale o extra [ml]."]})
+    assert "Nomes não detectados" in views.personal_html(run)

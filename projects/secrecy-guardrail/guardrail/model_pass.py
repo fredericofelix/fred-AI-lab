@@ -7,7 +7,7 @@ import re
 from dataclasses import dataclass
 from typing import Protocol
 
-from guardrail.flags import Flag
+from guardrail.flags import Flag, fold
 from guardrail.masking import Masked
 from guardrail.rubric import Rubric
 
@@ -114,7 +114,8 @@ def parse_llm_output(raw: str) -> list[ModelSpan]:
 
 
 def _span_pattern(span: str) -> re.Pattern[str] | None:
-    words = span.split()
+    """Pattern to run on fold(text): case- and accent-insensitive, any whitespace between words."""
+    words = fold(span).split()
     return re.compile(r"\s+".join(re.escape(w) for w in words)) if words else None
 
 
@@ -128,7 +129,7 @@ def locate(spans: list[ModelSpan], masked: Masked, original: str) -> tuple[list[
             dropped += 1
             continue
         found = []
-        for m in pattern.finditer(masked.text):
+        for m in pattern.finditer(fold(masked.text)):  # fold keeps offsets
             mapped = masked.to_original(m.start(), m.end())
             if mapped:
                 found.append(Flag(s.group, s.kind, mapped[0], mapped[1], original[mapped[0] : mapped[1]], "model"))

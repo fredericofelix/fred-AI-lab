@@ -55,3 +55,9 @@ def test_fake_model_pass_replays_and_raises():
     with pytest.raises(TimeoutError):
         fake("b")
     assert fake.inputs == ["a", "b"]
+
+
+def test_locate_matches_other_case_repeats():
+    text = "A Construtora Alfa ligou. A CONSTRUTORA ALFA respondeu."
+    flags, dropped = locate([ModelSpan(1, "org", "Construtora Alfa")], mask_for_model(text, []), text)
+    assert dropped == 0 and [f.text for f in flags] == ["Construtora Alfa", "CONSTRUTORA ALFA"]

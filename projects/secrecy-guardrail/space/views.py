@@ -128,7 +128,9 @@ def personal_html(run: GuardrailRun) -> str:
         '<div class="g-card detector"><b>Passo 1 · Dados pessoais — '
         f'<a href="{DETECTOR_SPACE}">Detector LGPD</a> by Privacy Seed</b><br>'
         f"{_count(data, 'dado pessoal', 'dados pessoais')} e {_count(names, 'nome', 'nomes')} encontrados. "
-        f'Biblioteca aberta: <a href="{DETECTOR_REPO}">privacyseed-lgpd</a>.</div>'
+        f'Biblioteca aberta: <a href="{DETECTOR_REPO}">privacyseed-lgpd</a>.'
+        + "".join(f"<br>⚠️ {html.escape(w)}" for w in run.warnings)
+        + "</div>"
     )
 
 
