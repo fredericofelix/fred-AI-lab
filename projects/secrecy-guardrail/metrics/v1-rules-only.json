@@ -1,0 +1,196 @@
+{
+  "model": "none",
+  "recall": {
+    "1": 0.48,
+    "2": 1.0,
+    "3": 0.6316,
+    "4": 1.0,
+    "5": 0.4286,
+    "6": 1.0
+  },
+  "precision": {
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.8889,
+    "4": 1.0,
+    "5": 1.0,
+    "6": 0.9
+  },
+  "headline_recall": 0.6304,
+  "clean_false_alarm": 0.0,
+  "flag_precision": 0.9583,
+  "dropped_spans": 0,
+  "model_failures": 0,
+  "seconds_p50": 0.16,
+  "seconds_max": 8.22,
+  "misses": [
+    {
+      "case": "C-001",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Transportes Boa Viagem Ltda"
+    },
+    {
+      "case": "C-002",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Metalúrgica Horizonte S.A."
+    },
+    {
+      "case": "C-003",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "Nossa tese principal será a prescrição bienal"
+    },
+    {
+      "case": "C-003",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "não vamos mencionar o acordo verbal feito em 2023, porque ele enfraquece a defesa"
+    },
+    {
+      "case": "C-004",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Quimtec Aditivos"
+    },
+    {
+      "case": "C-004",
+      "doubtful": false,
+      "group": 5,
+      "kind": "third_party",
+      "span": "a composição do aditivo XR-7 (40% de polímero reciclado e catalisador à base de zinco)"
+    },
+    {
+      "case": "C-008",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Padaria Pão Dourado"
+    },
+    {
+      "case": "C-011",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Lojas Primavera"
+    },
+    {
+      "case": "C-011",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "Vamos segurar a proposta até a audiência de conciliação para pressionar a outra parte"
+    },
+    {
+      "case": "C-012",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Vetta Software"
+    },
+    {
+      "case": "C-012",
+      "doubtful": false,
+      "group": 5,
+      "kind": "third_party",
+      "span": "lançamento do módulo de crédito em março de 2026, ainda não anunciado ao mercado"
+    },
+    {
+      "case": "C-013",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Banco Atlântico Nacional"
+    },
+    {
+      "case": "C-017",
+      "doubtful": true,
+      "group": 1,
+      "kind": "org",
+      "span": "Distribuidora Sol Nascente"
+    },
+    {
+      "case": "C-018",
+      "doubtful": false,
+      "group": 5,
+      "kind": "third_party",
+      "span": "o processo de têmpera a 870 °C por 40 minutos"
+    },
+    {
+      "case": "C-018",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Aços Vale Verde"
+    },
+    {
+      "case": "C-019",
+      "doubtful": true,
+      "group": 3,
+      "kind": "clause",
+      "span": "dirigia embriagado na hora do acidente"
+    },
+    {
+      "case": "C-019",
+      "doubtful": true,
+      "group": 3,
+      "kind": "clause",
+      "span": "sem mencionar essa confissão"
+    },
+    {
+      "case": "C-023",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Clínica Bem Viver"
+    },
+    {
+      "case": "C-025",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Gráfica Ponto Final"
+    },
+    {
+      "case": "C-025",
+      "doubtful": false,
+      "group": 5,
+      "kind": "third_party",
+      "span": "a lista de clientes da Gráfica Ponto Final"
+    },
+    {
+      "case": "C-026",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Imobiliária Lar Doce"
+    },
+    {
+      "case": "C-027",
+      "doubtful": true,
+      "group": 3,
+      "kind": "clause",
+      "span": "Não vamos comunicar à autoridade antes da reunião do conselho"
+    },
+    {
+      "case": "C-029",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "vamos sustentar a decadência do crédito de 2018"
+    },
+    {
+      "case": "C-031",
+      "doubtful": false,
+      "group": 1,
+      "kind": "org",
+      "span": "Construtora Monte Azul"
+    }
+  ]
+}
