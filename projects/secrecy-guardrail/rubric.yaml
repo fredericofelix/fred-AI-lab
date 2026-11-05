@@ -1,0 +1,105 @@
+# Rubrica do guardrail de sigilo profissional — Lex Seed
+# Licença: CC-BY-4.0. Edite à vontade: é a régua do seu jurídico.
+#
+# Como funciona:
+# - O guardrail aponta trechos que podem violar o sigilo profissional antes
+#   de você enviar o texto a uma ferramenta de IA. Ele nunca reescreve nem
+#   envia nada: você decide cada substituição.
+# - Cada grupo tem um motivo e um fundamento legal, mostrados na tela.
+# - "templates" define a substituição sugerida por tipo de trecho.
+#   {n} numera entidades diferentes (mesma entidade = mesmo rótulo).
+#   Sem template (vazio), o trecho é só sinalizado.
+# - As listas no fim (marcações, pistas) são detectadas por regra fixa:
+#   a IA não consegue removê-las.
+
+version: "0.1"
+
+groups:
+  - id: 1
+    name: Identidade de cliente ou parte
+    reason: Pode identificar o cliente, a parte contrária ou outra pessoa envolvida.
+    anchor: "EOAB (Lei 8.906/94), art. 7º, II, e art. 34, VII; Código de Ética e Disciplina da OAB, arts. 35 a 38; Recomendação CFOAB nº 001/2024"
+    experimental: false
+    templates:
+      person: "[PESSOA {n}]"
+      org: "[EMPRESA {n}]"
+
+  - id: 2
+    name: Número de processo (CNJ)
+    reason: O número do processo leva direto às partes e ao caso.
+    anchor: "EOAB (Lei 8.906/94), art. 7º, II, e art. 34, VII; Código de Ética e Disciplina da OAB, arts. 35 a 38"
+    experimental: false
+    templates:
+      cnj: "[PROCESSO {n}]"
+
+  - id: 3
+    name: Estratégia e negociação
+    reason: Tese, proposta de acordo, valores ou limites de alçada revelam a estratégia do cliente.
+    anchor: "Código de Ética e Disciplina da OAB, arts. 35 a 38"
+    experimental: true
+    templates:
+      amount: "[VALOR {n}]"
+      clause:
+
+  - id: 4
+    name: Marcação de confidencialidade
+    reason: O próprio texto se declara confidencial ou privilegiado.
+    anchor: "Código de Ética e Disciplina da OAB, arts. 35 a 38; para segredo de justiça, CPC, art. 189"
+    experimental: false
+    templates:
+      marking:
+
+  - id: 5
+    name: Informação de terceiro sob NDA ou segredo industrial
+    reason: Informação recebida de terceiro sob dever de confidencialidade.
+    anchor: "Lei 9.279/96, art. 195, XI; dever contratual de confidencialidade"
+    experimental: false
+    templates:
+      third_party: "[INFORMAÇÃO CONFIDENCIAL DE TERCEIRO]"
+
+  - id: 6
+    name: Dados pessoais
+    reason: Dado pessoal detectado pelo Detector LGPD da Privacy Seed.
+    anchor: "LGPD (Lei 13.709/18), art. 5º, I e II"
+    experimental: false
+    templates:
+      personal: detector
+
+markings:
+  - confidencial
+  - estritamente confidencial
+  - privilegiado
+  - sigiloso
+  - segredo de justiça
+  - attorney-client privileged
+  - privileged & confidential
+
+nda_cues:
+  - NDA
+  - acordo de confidencialidade
+  - termo de confidencialidade
+  - segredo industrial
+  - segredo comercial
+
+negotiation_cues:
+  - acordo
+  - proposta
+  - oferta
+  - teto
+  - alçada
+  - contraproposta
+  - fechar
+  - aceitar até
+  - limite
+
+precedent_cues:
+  - precedente
+  - jurisprudência
+  - julgado
+  - acórdão
+  - REsp
+  - RE
+  - Tema
+  - STJ
+  - STF
+  - TST
