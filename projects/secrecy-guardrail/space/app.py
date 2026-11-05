@@ -11,6 +11,7 @@ from pathlib import Path  # noqa: E402
 import gradio as gr  # noqa: E402
 import views  # noqa: E402
 
+from guardrail.personal import default_detector  # noqa: E402
 from guardrail.pipeline import StageEvent  # noqa: E402
 from guardrail.rubric import RUBRIC_PATH, load_rubric  # noqa: E402
 from guardrail.runtimes import DEFAULT_MODEL_PASS, get_model_pass  # noqa: E402
@@ -23,8 +24,15 @@ HOW_IT_WORKS = (HERE / "how_it_works.md").read_text(encoding="utf-8")
 METRICS = HERE / "METRICS.md"
 BANNER = "🚧 **Em construção.** Versão de teste antes do lançamento."
 
+
+
+def _warm_up():
+    default_detector().analyze("aquecimento")  # loads the Privacy Seed detector (regex + GLiNER2)
+    MODEL_PASS.warm_up()
+
+
 # Load the models in the background, so the page and the examples work at once.
-threading.Thread(target=MODEL_PASS.warm_up, daemon=True).start()
+threading.Thread(target=_warm_up, daemon=True).start()
 
 
 def _watchdog():

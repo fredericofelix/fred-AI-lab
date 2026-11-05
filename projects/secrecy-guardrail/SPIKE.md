@@ -28,6 +28,30 @@ RAM, license, PT-BR quality.
 - The max includes the first call, which loads the weights.
 - Detector finding (Privacy Seed backlog, not fixed here): `privacyseed-lgpd` 0.1.0 labels a bare year ("2023") as `birth_date` (score 0.94).
 
-## Latency on the Space (Hugging Face CPU basic, 2 vCPU)
+## Quality on the full set (40 cases, `metrics/v1-*.json`)
 
-To be measured on the spike Space.
+| Pass | Headline recall | Group 3 | Group 5 | Clean false alarm | Flag precision |
+|---|---|---|---|---|---|
+| rules + detector only | 0.63 | 0.63 | 0.43 | 0/10 | 0.96 |
+| `hybrid`, before the generic-name filter | 0.93 | 0.63 | 0.57 | 4/10 | 0.77 |
+| **`hybrid`, with the generic-name filter** | **0.93** | 0.63 | 0.57 | **0/10** | 0.84 |
+
+The four false alarms were company flags from GLiNER2 on placeholders (`[CLIENTE]`), "empresa X", "LGPD" and
+"Fazenda Pública". The filter (`generic_names` in `rubric.yaml`, model flags only) was tuned on these same cases.
+
+## Latency on the Space (Hugging Face CPU basic, 2 vCPU), `hybrid`, 2026-11-05
+
+| Call | End to end | Detector | Model pass |
+|---|---|---|---|
+| First (download + load both models) | 73 s | 14.4 s | 58.6 s |
+| Warm, C-001 | 24 s | 0.9 s | 23.3 s |
+| Warm, C-004 | 18 s | 0.6 s | 17.7 s |
+| Warm, C-031 | 23 s | 0.6 s | 22.6 s |
+
+Warm calls are within the 30 s target. The final Space loads both models at boot (`warm_up`), so visitors only
+see the cold time right after a restart. Both models fit in the free tier's memory (no crash across the runs).
+
+## Choice
+
+**`hybrid`** (`DEFAULT_MODEL_PASS`): best headline recall with no clean false alarms, warm latency 18–24 s on the
+free CPU tier. The spike Space was deleted after the measurement.

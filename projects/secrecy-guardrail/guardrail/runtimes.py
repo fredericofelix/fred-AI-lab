@@ -175,7 +175,7 @@ class HybridPass:
 
 
 CANDIDATES = ("gliner", "qwen3-4b", "hybrid")
-DEFAULT_MODEL_PASS = "hybrid"  # provisional until the spike decides, see SPIKE.md
+DEFAULT_MODEL_PASS = "hybrid"  # chosen by the spike, see SPIKE.md
 
 
 def get_model_pass(name: str):
