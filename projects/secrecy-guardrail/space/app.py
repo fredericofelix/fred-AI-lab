@@ -22,7 +22,6 @@ MODEL_PASS = get_model_pass(DEFAULT_MODEL_PASS)
 EXAMPLES = views.load_examples(HERE / "examples.json")
 HOW_IT_WORKS = (HERE / "how_it_works.md").read_text(encoding="utf-8")
 METRICS = HERE / "METRICS.md"
-BANNER = "🚧 **Em construção.** Versão de teste antes do lançamento."
 
 
 
@@ -57,7 +56,6 @@ def show_example(index: int):
 
 with gr.Blocks(title="Lex Seed · Guardrail de Sigilo", analytics_enabled=False) as demo:
     gr.Markdown("# Lex Seed · Guardrail de Sigilo")
-    gr.Markdown(BANNER)
     with gr.Tabs():
         with gr.Tab("Verificar"):
             gr.Markdown(
