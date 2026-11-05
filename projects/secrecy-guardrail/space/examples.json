@@ -4,7 +4,7 @@
     "case": "C-001",
     "text": "CONFIDENCIAL\nMelhore o tom deste e-mail para o advogado da outra parte: \"Prezado Dr. Paulo Rezende, em nome da Transportes Boa Viagem Ltda, no processo 0004417-13.2025.8.13.0024, nossa cliente aceita fechar o acordo por até R$ 350 mil, desde que o pagamento seja em 10 parcelas.\"",
     "model": "hybrid",
-    "seconds": 31.6,
+    "seconds": 31.9,
     "model_spans": [
       {
         "group": 1,
@@ -28,7 +28,7 @@
     "case": "C-004",
     "text": "A fornecedora Quimtec Aditivos nos enviou, sob NDA, a composição do aditivo XR-7 (40% de polímero reciclado e catalisador à base de zinco). Redija uma cláusula de garantia de desempenho para o contrato de compra.",
     "model": "hybrid",
-    "seconds": 6.0,
+    "seconds": 6.3,
     "model_spans": [
       {
         "group": 1,
