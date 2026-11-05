@@ -37,7 +37,7 @@ para estratégia e informação de terceiro (ambos Apache-2.0), sem API paga e s
 
 | Métrica | v0 |
 |---|---|
-| **Recall nos grupos 1, 2, 4 e 5** (não deixar passar o que é sigiloso) | **93%** |
+| **Recall nos grupos 1, 2, 4 e 5** (não deixar passar o que é sigiloso) | **98%** |
 | Casos limpos com alarme | 0 de 10 |
 | Estratégia e negociação (experimental) | 63% |
 | Tempo por texto (CPU gratuita do Hugging Face) | 18–24 s |
@@ -68,7 +68,7 @@ Copilot, gateway).
 
 - Conjunto pequeno, fictício, escrito e rotulado pelo autor; Fred Gomes revisou os casos duvidosos.
 - A v0 não sabe quem é o cliente: aponta todas as pessoas e empresas, inclusive juízes e advogados da outra parte.
-- Teses sem palavra de negociação e informação de terceiro sem a palavra NDA escapam com frequência.
+- Teses sem palavra de negociação escapam com frequência; informação de terceiro sem nenhuma pista também pode escapar.
 - "Nenhum ponto encontrado" não é garantia. Não constitui aconselhamento jurídico.
 
 **Quer aplicar ao seu jurídico? [Fale com a Lex Seed](https://www.lexseed.com.br/?utm_source=github&utm_medium=readme&utm_campaign=guardrail-sigilo).**
@@ -85,7 +85,7 @@ numbers, strategy and negotiation, confidentiality markings, third-party informa
 explains the legal basis and suggests a replacement. It never rewrites or sends anything. Fixed rules and the
 Privacy Seed LGPD detector run first, and a local model (GLiNER2 + Qwen3-4B, no external API) can only add flags.
 
-v0 on 40 synthetic Brazilian Portuguese texts: 93% recall on groups 1, 2, 4 and 5, no false alarms on 10 clean
+v0 on 40 synthetic Brazilian Portuguese texts: 98% recall on groups 1, 2, 4 and 5, no false alarms on 10 clean
 texts, 63% on the experimental strategy group, 18–24 s per text on a free CPU. Limits: small author-labeled set,
 no client/party distinction, "no flags" is not a guarantee, not legal advice. Run it locally for real text.
 

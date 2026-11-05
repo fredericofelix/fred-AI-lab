@@ -34,7 +34,8 @@ RAM, license, PT-BR quality.
 |---|---|---|---|---|---|
 | rules + detector only | 0.63 | 0.63 | 0.43 | 0/10 | 0.96 |
 | `hybrid`, before the generic-name filter | 0.93 | 0.63 | 0.57 | 4/10 | 0.77 |
-| **`hybrid`, with the generic-name filter** | **0.93** | 0.63 | 0.57 | **0/10** | 0.84 |
+| `hybrid`, with the generic-name filter | 0.93 | 0.63 | 0.57 | 0/10 | 0.84 |
+| **`hybrid`, after the final-review merge fix** | **0.98** | 0.63 | **0.86** | **0/10** | 0.84 |
 
 The four false alarms were company flags from GLiNER2 on placeholders (`[CLIENTE]`), "empresa X", "LGPD" and
 "Fazenda Pública". The filter (`generic_names` in `rubric.yaml`, model flags only) was tuned on these same cases.
@@ -54,4 +55,5 @@ see the cold time right after a restart. Both models fit in the free tier's memo
 ## Choice
 
 **`hybrid`** (`DEFAULT_MODEL_PASS`): best headline recall with no clean false alarms, warm latency 18–24 s on the
-free CPU tier. The spike Space was deleted after the measurement.
+free CPU tier. The spike Space was deleted after the measurement. The final review found that the merge dropped a
+long model span (the secret) when it overlapped a short NDA cue; fixing it raised group 5 from 0.57 to 0.86.

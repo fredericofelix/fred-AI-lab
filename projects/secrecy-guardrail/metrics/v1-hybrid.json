@@ -5,7 +5,7 @@
     "2": 1.0,
     "3": 0.6316,
     "4": 1.0,
-    "5": 0.5714,
+    "5": 0.8571,
     "6": 1.0
   },
   "precision": {
@@ -16,13 +16,13 @@
     "5": 1.0,
     "6": 0.9
   },
-  "headline_recall": 0.9348,
+  "headline_recall": 0.9783,
   "clean_false_alarm": 0.0,
-  "flag_precision": 0.8356,
-  "dropped_spans": 2,
+  "flag_precision": 0.84,
+  "dropped_spans": 1,
   "model_failures": 0,
-  "seconds_p50": 2.76,
-  "seconds_max": 34.03,
+  "seconds_p50": 2.11,
+  "seconds_max": 39.16,
   "misses": [
     {
       "case": "C-003",
@@ -53,13 +53,6 @@
       "span": "lançamento do módulo de crédito em março de 2026, ainda não anunciado ao mercado"
     },
     {
-      "case": "C-018",
-      "doubtful": false,
-      "group": 5,
-      "kind": "third_party",
-      "span": "o processo de têmpera a 870 °C por 40 minutos"
-    },
-    {
       "case": "C-019",
       "doubtful": true,
       "group": 3,
@@ -72,13 +65,6 @@
       "group": 3,
       "kind": "clause",
       "span": "sem mencionar essa confissão"
-    },
-    {
-      "case": "C-025",
-      "doubtful": false,
-      "group": 5,
-      "kind": "third_party",
-      "span": "a lista de clientes da Gráfica Ponto Final"
     },
     {
       "case": "C-027",
