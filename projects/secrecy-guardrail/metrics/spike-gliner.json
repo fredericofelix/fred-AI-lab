@@ -1,0 +1,42 @@
+{
+  "model": "gliner",
+  "recall": {
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.8333,
+    "4": 1.0,
+    "5": 0.5,
+    "6": 1.0
+  },
+  "precision": {
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.5,
+    "4": 1.0,
+    "5": 1.0,
+    "6": 0.75
+  },
+  "headline_recall": 0.9412,
+  "clean_false_alarm": 1.0,
+  "flag_precision": 0.8462,
+  "dropped_spans": 0,
+  "model_failures": 0,
+  "seconds_p50": 0.25,
+  "seconds_max": 7.75,
+  "misses": [
+    {
+      "case": "C-003",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "não vamos mencionar o acordo verbal feito em 2023, porque ele enfraquece a defesa"
+    },
+    {
+      "case": "C-004",
+      "doubtful": false,
+      "group": 5,
+      "kind": "third_party",
+      "span": "a composição do aditivo XR-7 (40% de polímero reciclado e catalisador à base de zinco)"
+    }
+  ]
+}

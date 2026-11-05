@@ -1,0 +1,84 @@
+{
+  "model": "hybrid",
+  "recall": {
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.6316,
+    "4": 1.0,
+    "5": 0.8571,
+    "6": 1.0
+  },
+  "precision": {
+    "1": 0.8333,
+    "2": 1.0,
+    "3": 0.6,
+    "4": 1.0,
+    "5": 1.0,
+    "6": 0.9
+  },
+  "headline_recall": 0.9783,
+  "clean_false_alarm": 0.0,
+  "flag_precision": 0.84,
+  "dropped_spans": 1,
+  "model_failures": 0,
+  "seconds_p50": 2.11,
+  "seconds_max": 39.16,
+  "misses": [
+    {
+      "case": "C-003",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "Nossa tese principal será a prescrição bienal"
+    },
+    {
+      "case": "C-003",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "não vamos mencionar o acordo verbal feito em 2023, porque ele enfraquece a defesa"
+    },
+    {
+      "case": "C-011",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "Vamos segurar a proposta até a audiência de conciliação para pressionar a outra parte"
+    },
+    {
+      "case": "C-012",
+      "doubtful": false,
+      "group": 5,
+      "kind": "third_party",
+      "span": "lançamento do módulo de crédito em março de 2026, ainda não anunciado ao mercado"
+    },
+    {
+      "case": "C-019",
+      "doubtful": true,
+      "group": 3,
+      "kind": "clause",
+      "span": "dirigia embriagado na hora do acidente"
+    },
+    {
+      "case": "C-019",
+      "doubtful": true,
+      "group": 3,
+      "kind": "clause",
+      "span": "sem mencionar essa confissão"
+    },
+    {
+      "case": "C-027",
+      "doubtful": true,
+      "group": 3,
+      "kind": "clause",
+      "span": "Não vamos comunicar à autoridade antes da reunião do conselho"
+    },
+    {
+      "case": "C-029",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "vamos sustentar a decadência do crédito de 2018"
+    }
+  ]
+}

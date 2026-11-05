@@ -1,0 +1,9 @@
+# CPU-only PyTorch wheel pinned by URL and hash (no extra package index, no CUDA download).
+torch @ https://download.pytorch.org/whl/cpu/torch-2.15.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=0955c7e3446326293f48af18fad67872fa31dee5a36a87690eb9e5be8b465be3
+PyYAML==6.0.3
+privacyseed-lgpd[ml]==0.1.0
+gliner2==2.1.0
+transformers==5.22.1
+huggingface_hub==1.33.0
+# Prebuilt CPU wheel pinned by URL and hash (same artifact as the triage Space).
+llama-cpp-python @ https://github.com/abetlen/llama-cpp-python/releases/download/v0.3.36/llama_cpp_python-0.3.36-py3-none-manylinux2014_x86_64.manylinux_2_17_x86_64.whl#sha256=c8a3e98093e950d7a770f794842e36f2db82b2933e8762ed7b5ffd435011e8e4

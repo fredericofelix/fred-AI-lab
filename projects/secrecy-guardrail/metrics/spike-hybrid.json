@@ -1,0 +1,42 @@
+{
+  "model": "hybrid",
+  "recall": {
+    "1": 1.0,
+    "2": 1.0,
+    "3": 0.6667,
+    "4": 1.0,
+    "5": 1.0,
+    "6": 1.0
+  },
+  "precision": {
+    "1": 0.9,
+    "2": 1.0,
+    "3": 0.6667,
+    "4": 1.0,
+    "5": 1.0,
+    "6": 0.75
+  },
+  "headline_recall": 1.0,
+  "clean_false_alarm": 0.0,
+  "flag_precision": 0.8571,
+  "dropped_spans": 1,
+  "model_failures": 0,
+  "seconds_p50": 4.93,
+  "seconds_max": 29.55,
+  "misses": [
+    {
+      "case": "C-003",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "Nossa tese principal será a prescrição bienal"
+    },
+    {
+      "case": "C-003",
+      "doubtful": false,
+      "group": 3,
+      "kind": "clause",
+      "span": "não vamos mencionar o acordo verbal feito em 2023, porque ele enfraquece a defesa"
+    }
+  ]
+}
