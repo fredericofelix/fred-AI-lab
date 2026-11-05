@@ -2,13 +2,14 @@
 
 from __future__ import annotations
 
+import re
 import time
 from collections.abc import Iterator
 from dataclasses import dataclass
 from typing import Literal
 
 from guardrail.deterministic import deterministic_flags, injection_markers
-from guardrail.flags import Flag
+from guardrail.flags import Flag, fold, term_pattern
 from guardrail.masking import mask_for_model
 from guardrail.merge import assign_labels, merge, preview, verdict
 from guardrail.model_pass import ModelPass, locate
@@ -40,6 +41,19 @@ class GuardrailRun:
     truncated: bool
     warnings: list[str]
     seconds: dict[str, float]
+
+
+_PLACEHOLDER_NAME = re.compile(r"(?:empresa|companhia|parte|cliente|fornecedor|sociedade)\s+[a-z]")
+
+
+def _generic(flag: Flag, text: str, rubric: Rubric) -> bool:
+    """A company name from the model that identifies no one: placeholder, statute, court or generic public body."""
+    if flag.group != 1 or flag.kind != "org":
+        return False
+    if text[flag.start - 1 : flag.start] == "[" and text[flag.end : flag.end + 1] == "]":
+        return True
+    name = " ".join(fold(flag.text).split())
+    return bool(_PLACEHOLDER_NAME.fullmatch(name)) or any(term_pattern(g).fullmatch(name) for g in rubric.generic_names)
 
 
 def _count(n: int, one: str, many: str) -> str:
@@ -81,6 +95,7 @@ def check(
     status: ModelStatus = "ok"
     try:
         model_flags, dropped = locate(model_pass(masked.text), masked, text)
+        model_flags = [f for f in model_flags if not _generic(f, text, rubric)]
     except TimeoutError:
         status = "timeout"
     except Exception:  # a crashed or confused model is reported, never shown as a stack trace

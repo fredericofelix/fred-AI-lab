@@ -75,3 +75,16 @@ def test_injection_recorded():
 def test_dropped_spans_counted():
     run = run_check("texto neutro", RUBRIC, FakeModelPass([[ModelSpan(1, "org", "Inexistente")]]), FakeDetector())
     assert run.dropped_spans == 1 and run.flags == []
+
+
+def test_generic_org_names_from_the_model_are_dropped():
+    text = "Modelo para [CLIENTE] e a empresa X sobre a LGPD e a Fazenda Pública, contra a Construtora Alfa."
+    spans = [ModelSpan(1, "org", s) for s in ("CLIENTE", "empresa X", "LGPD", "Fazenda Pública", "Construtora Alfa")]
+    run = run_check(text, RUBRIC, FakeModelPass([spans]), FakeDetector())
+    assert [f.text for f in run.flags] == ["Construtora Alfa"]
+
+
+def test_generic_filter_never_drops_fixed_flags():
+    text = "CONFIDENCIAL: LGPD"
+    run = run_check(text, RUBRIC, FakeModelPass([[ModelSpan(1, "org", "LGPD")]]), FakeDetector())
+    assert [f.text for f in run.flags] == ["CONFIDENCIAL"]

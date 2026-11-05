@@ -103,3 +103,23 @@ precedent_cues:
   - STJ
   - STF
   - TST
+
+# Nomes que o modelo às vezes aponta como empresa, mas não identificam ninguém:
+# leis, tribunais, entes públicos genéricos. Vale só para o que o modelo aponta;
+# as regras fixas e o Detector LGPD não são afetados. Placeholders entre
+# colchetes ([CLIENTE]) e "empresa X" também são ignorados.
+generic_names:
+  - LGPD
+  - CPC
+  - CLT
+  - Código Civil
+  - Código de Processo Civil
+  - Constituição Federal
+  - Fazenda Pública
+  - Ministério Público
+  - Poder Judiciário
+  - STF
+  - STJ
+  - TST
+  - ANPD
+  - OAB

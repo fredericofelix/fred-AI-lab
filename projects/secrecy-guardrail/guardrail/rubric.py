@@ -36,6 +36,7 @@ class Rubric:
     nda_cues: tuple[str, ...]
     negotiation_cues: tuple[str, ...]
     precedent_cues: tuple[str, ...]
+    generic_names: tuple[str, ...] = ()
 
 
 def _strings(data: dict, key: str) -> tuple[str, ...]:
@@ -74,4 +75,5 @@ def load_rubric(path: Path = RUBRIC_PATH) -> Rubric:
         nda_cues=_strings(data, "nda_cues"),
         negotiation_cues=_strings(data, "negotiation_cues"),
         precedent_cues=_strings(data, "precedent_cues"),
+        generic_names=_strings(data, "generic_names"),
     )
