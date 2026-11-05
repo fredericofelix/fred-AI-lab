@@ -1,6 +1,5 @@
-# CPU-only PyTorch (no CUDA download); the only extra index, used for torch alone.
---extra-index-url https://download.pytorch.org/whl/cpu
-torch==2.15.0+cpu
+# CPU-only PyTorch wheel pinned by URL and hash (no extra package index, no CUDA download).
+torch @ https://download.pytorch.org/whl/cpu/torch-2.15.0%2Bcpu-cp312-cp312-manylinux_2_28_x86_64.whl#sha256=0955c7e3446326293f48af18fad67872fa31dee5a36a87690eb9e5be8b465be3
 PyYAML==6.0.3
 privacyseed-lgpd[ml]==0.1.0
 gliner2==2.1.0
