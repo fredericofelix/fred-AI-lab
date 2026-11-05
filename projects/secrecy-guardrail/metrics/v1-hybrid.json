@@ -9,7 +9,7 @@
     "6": 1.0
   },
   "precision": {
-    "1": 0.6944,
+    "1": 0.8333,
     "2": 1.0,
     "3": 0.6,
     "4": 1.0,
@@ -17,12 +17,12 @@
     "6": 0.9
   },
   "headline_recall": 0.9348,
-  "clean_false_alarm": 0.4,
-  "flag_precision": 0.7722,
+  "clean_false_alarm": 0.0,
+  "flag_precision": 0.8356,
   "dropped_spans": 2,
   "model_failures": 0,
-  "seconds_p50": 2.34,
-  "seconds_max": 30.21,
+  "seconds_p50": 2.76,
+  "seconds_max": 34.03,
   "misses": [
     {
       "case": "C-003",
