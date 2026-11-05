@@ -8,7 +8,8 @@ from guardrail.flags import Flag, fold, term_pattern
 from guardrail.rubric import Rubric
 
 _CNJ_FORMATTED = re.compile(r"(?<!\d)(\d{7})-(\d{2})\.(\d{4})\.(\d)\.(\d{2})\.(\d{4})(?!\d)")
-_CNJ_BARE = re.compile(r"(?<!\d)(\d{7})(\d{2})(\d{4})(\d)(\d{2})(\d{4})(?!\d)")
+# Any other separator mix (spaces, dots, dashes, none): trusted only when the check digit validates.
+_CNJ_LOOSE = re.compile(r"(?<!\d)(\d{7})[-.\s]?(\d{2})[-.\s]?(\d{4})[-.\s]?(\d)[-.\s]?(\d{2})[-.\s]?(\d{4})(?!\d)")
 _PRECEDENT_WINDOW = 80
 _NEGOTIATION_WINDOW = 60
 
@@ -48,11 +49,13 @@ def _after_cue(folded: str, start: int, cues: tuple[str, ...], window: int) -> b
 def cnj_flags(text: str, rubric: Rubric) -> list[Flag]:
     folded = fold(text)
     flags = []
-    for pattern, bare in ((_CNJ_FORMATTED, False), (_CNJ_BARE, True)):
+    seen: set[tuple[int, int]] = set()
+    for pattern, loose in ((_CNJ_FORMATTED, False), (_CNJ_LOOSE, True)):
         for m in pattern.finditer(text):
             valid = _valid(m)
-            if bare and not valid:
-                continue  # 20 loose digits are a case number only when the check digit says so
+            if (m.start(), m.end()) in seen or (loose and not valid):
+                continue  # loose digits are a case number only when the check digit says so
+            seen.add((m.start(), m.end()))
             note = None if valid else NOTE_INVALID
             if _after_cue(folded, m.start(), rubric.precedent_cues, _PRECEDENT_WINDOW):
                 note = NOTE_PRECEDENT
