@@ -21,6 +21,8 @@ demanda → Detector LGPD (mascara) → modelo (tipo + sinais + trechos) → con
 
 Risco alto, regras de exceção (citação, incidente com dados) e qualquer dúvida do modelo vão para **revisão humana**.
 
+**Arquitetura:** degrau 2 da escada de autonomia, uma cadeia de etapas com portões em código (*prompt chaining*, no artigo [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) da Anthropic). Há uma única chamada ao modelo; a conferência e a rubrica são código, não prompt. Não é um agente, de propósito: em triagem, quem decide o prazo precisa ser auditável.
+
 ## Resultado (v0)
 
 40 demandas sintéticas, escritas e rotuladas com um advogado, com casos difíceis de propósito.
@@ -60,7 +62,7 @@ Código sob Apache-2.0; `rubric.yaml` e `cases.jsonl` sob CC-BY-4.0.
 
 ## English
 
-**Legal intake triage with an auditable rubric.** A small open model (Qwen3-4B, running locally on CPU, no paid API) reads an in-house legal request and extracts its type and risk signals, each backed by a verbatim quote. Deterministic rules in an editable `rubric.yaml` set urgency, risk, priority and deadline; the model never does. The Privacy Seed detector masks identifiers before any model reads the text, and high-risk or uncertain requests go to a human.
+**Legal intake triage with an auditable rubric.** A small open model (Qwen3-4B, running locally on CPU, no paid API) reads an in-house legal request and extracts its type and risk signals, each backed by a verbatim quote. Deterministic rules in an editable `rubric.yaml` set urgency, risk, priority and deadline; the model never does. The Privacy Seed detector masks identifiers before any model reads the text, and high-risk or uncertain requests go to a human. Architecture: rung 2 of the autonomy ladder, a prompt chain with code gates ([Anthropic, Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)); deliberately not an agent.
 
 v0 on 40 synthetic, lawyer-labeled Brazilian Portuguese requests: 94% of serious cases caught (flagged as serious or sent to a human), 7.5% sent to a human for model uncertainty, 82.5% correct priority, ~25–40 s per request on a free CPU. Limits: synthetic data, 40 cases, single annotator, names and addresses not masked, not legal advice.
 

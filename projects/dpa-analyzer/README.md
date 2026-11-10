@@ -118,6 +118,8 @@ Click "View Playbook" to access the comprehensive DPA review guide that includes
 
 ## 🏗️ Architecture
 
+**Autonomy ladder:** rung 1, a single augmented LLM call (the review playbook goes in the prompt), with a rule-based fallback when the model is unavailable. Despite the project name, it is not an agent in the sense of [Anthropic's Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents).
+
 ```
 projects/dpa-analyzer/
 ├── main.py              # FastAPI server (backend)

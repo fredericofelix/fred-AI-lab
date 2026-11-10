@@ -31,6 +31,8 @@ texto → Detector LGPD → regras fixas → modelo de IA (lê o texto com proce
 Tudo roda localmente: GLiNER2 para empresas e [Qwen3-4B](https://huggingface.co/unsloth/Qwen3-4B-Instruct-2507-GGUF)
 para estratégia e informação de terceiro (ambos Apache-2.0), sem API paga e sem chamada externa.
 
+**Arquitetura:** degrau 2 da escada de autonomia, uma cadeia de etapas com portões em código (*prompt chaining*, no artigo [Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents) da Anthropic). As regras fixas rodam antes do modelo e a junção é código: a IA só acrescenta apontamentos, nunca decide sozinha o que passa.
+
 ## Resultado (v0)
 
 40 textos fictícios (30 com pontos sigilosos, 10 limpos).
@@ -83,7 +85,7 @@ Código sob Apache-2.0; `rubric.yaml` e `cases.jsonl` sob CC-BY-4.0.
 guardrail flags what may breach professional secrecy under Brazilian law (client and party identity, CNJ case
 numbers, strategy and negotiation, confidentiality markings, third-party information under NDA, personal data),
 explains the legal basis and suggests a replacement. It never rewrites or sends anything. Fixed rules and the
-Privacy Seed LGPD detector run first, and a local model (GLiNER2 + Qwen3-4B, no external API) can only add flags.
+Privacy Seed LGPD detector run first, and a local model (GLiNER2 + Qwen3-4B, no external API) can only add flags. Architecture: rung 2 of the autonomy ladder, a prompt chain with code gates ([Anthropic, Building Effective Agents](https://www.anthropic.com/engineering/building-effective-agents)).
 
 v0 on 40 synthetic Brazilian Portuguese texts: 98% recall on groups 1, 2, 4 and 5, no false alarms on 10 clean
 texts, 63% on the experimental strategy group, 18–24 s per text on a free CPU. Limits: small author-labeled set,
