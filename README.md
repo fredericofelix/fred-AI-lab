@@ -10,7 +10,7 @@ auditable criteria, measured evals and guardrails. Brazilian law first
 
 | Project | Area | Description |
 | --- | --- | --- |
-| [dpa-analyzer](projects/dpa-analyzer/) | Privacy · contract review | AI agent to analyze Data Processing Agreements (DPA) |
+| [dpa-analyzer](projects/dpa-analyzer/) | Privacy · contract review | AI assistant to analyze Data Processing Agreements (DPA) |
 | [secrecy-guardrail](projects/secrecy-guardrail/) | Legal AI · professional secrecy | Flags what may breach professional secrecy before text goes to an AI tool, local models only ([demo](https://huggingface.co/spaces/fred-ai-lab/guardrail-sigilo)) |
 | [legal-intake-triage](projects/legal-intake-triage/) | Legal Ops · intake | Triage of in-house legal requests with an auditable rubric and a small open model ([demo](https://huggingface.co/spaces/fred-ai-lab/triagem-juridica)) |
 

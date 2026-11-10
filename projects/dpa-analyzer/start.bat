@@ -1,7 +1,7 @@
 @echo off
-REM DPA Privacy Legal Review AI Agent - Windows Startup Script
+REM DPA Privacy Review Assistant - Windows Startup Script
 
-echo 🚀 Starting DPA Privacy Legal Review AI Agent...
+echo 🚀 Starting DPA Privacy Review Assistant...
 echo.
 
 REM Check if Ollama is running

@@ -1,8 +1,8 @@
 #!/bin/bash
 
-# DPA Privacy Legal Review AI Agent - Startup Script
+# DPA Privacy Review Assistant - Startup Script
 
-echo "🚀 Starting DPA Privacy Legal Review AI Agent..."
+echo "🚀 Starting DPA Privacy Review Assistant..."
 echo ""
 
 # Check if Ollama is running

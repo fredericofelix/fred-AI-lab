@@ -12,7 +12,7 @@ from pathlib import Path
 from dpa_analyzer import DPAAnalyzer
 from knowledge_base import DPAKnowledgeBase
 
-app = FastAPI(title="DPA Privacy Legal Review AI Agent", version="1.0.0")
+app = FastAPI(title="DPA Privacy Review Assistant", version="1.0.0")
 
 # Enable CORS for frontend integration
 app.add_middleware(
@@ -30,7 +30,7 @@ analyzer = DPAAnalyzer()
 @app.get("/")
 async def root():
     """Health check endpoint"""
-    return {"message": "DPA Privacy Legal Review AI Agent is running!"}
+    return {"message": "DPA Privacy Review Assistant is running!"}
 
 @app.get("/playbook")
 async def get_playbook():
